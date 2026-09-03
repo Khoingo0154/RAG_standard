@@ -1,0 +1,161 @@
+{
+  "dataset": "FIFA Law 11 - basic retrieval evaluation",
+  "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+  "top_k": 5,
+  "mean_recall_at_k": 1.0,
+  "mean_precision_at_k": 0.7,
+  "cases": [
+    {
+      "id": "offside_definition_vi",
+      "query": "Việt vị là gì?",
+      "intent": "DOCUMENT_QUERY",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.6,
+      "covered_pages": [
+        49,
+        50,
+        51
+      ],
+      "retrieved_pages": [
+        {
+          "page_start": 51,
+          "page_end": 51,
+          "score": 0.7088
+        },
+        {
+          "page_start": 51,
+          "page_end": 51,
+          "score": 0.7061
+        },
+        {
+          "page_start": 88,
+          "page_end": 89,
+          "score": 0.6977
+        },
+        {
+          "page_start": 49,
+          "page_end": 50,
+          "score": 0.6969
+        },
+        {
+          "page_start": 90,
+          "page_end": 91,
+          "score": 0.6966
+        }
+      ]
+    },
+    {
+      "id": "offside_no_offence_vi",
+      "query": "Khi nào cầu thủ không bị phạt việt vị?",
+      "intent": "DOCUMENT_QUERY",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.8,
+      "covered_pages": [
+        51
+      ],
+      "retrieved_pages": [
+        {
+          "page_start": 51,
+          "page_end": 51,
+          "score": 0.7373
+        },
+        {
+          "page_start": 51,
+          "page_end": 52,
+          "score": 0.7315
+        },
+        {
+          "page_start": 51,
+          "page_end": 51,
+          "score": 0.725
+        },
+        {
+          "page_start": 80,
+          "page_end": 81,
+          "score": 0.724
+        },
+        {
+          "page_start": 50,
+          "page_end": 51,
+          "score": 0.7219
+        }
+      ]
+    },
+    {
+      "id": "offside_sanction_vi",
+      "query": "Hình phạt khi phạm lỗi việt vị là gì?",
+      "intent": "DOCUMENT_QUERY",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.6,
+      "covered_pages": [
+        51
+      ],
+      "retrieved_pages": [
+        {
+          "page_start": 51,
+          "page_end": 51,
+          "score": 0.7256
+        },
+        {
+          "page_start": 51,
+          "page_end": 51,
+          "score": 0.724
+        },
+        {
+          "page_start": 51,
+          "page_end": 52,
+          "score": 0.7132
+        },
+        {
+          "page_start": 80,
+          "page_end": 81,
+          "score": 0.704
+        },
+        {
+          "page_start": 89,
+          "page_end": 89,
+          "score": 0.7037
+        }
+      ]
+    },
+    {
+      "id": "foul_vi",
+      "query": "Hành vi cản người nào sẽ bị phạt thẻ ?",
+      "intent": "DOCUMENT_QUERY",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.8,
+      "covered_pages": [
+        55,
+        56,
+        57
+      ],
+      "retrieved_pages": [
+        {
+          "page_start": 54,
+          "page_end": 55,
+          "score": 0.7564
+        },
+        {
+          "page_start": 55,
+          "page_end": 56,
+          "score": 0.7511
+        },
+        {
+          "page_start": 56,
+          "page_end": 57,
+          "score": 0.7495
+        },
+        {
+          "page_start": 54,
+          "page_end": 54,
+          "score": 0.7485
+        },
+        {
+          "page_start": 55,
+          "page_end": 55,
+          "score": 0.7465
+        }
+      ]
+    }
+  ]
+}

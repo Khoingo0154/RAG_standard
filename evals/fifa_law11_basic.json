@@ -1,0 +1,38 @@
+{
+  "name": "FIFA Law 11 - basic retrieval evaluation",
+  "description": "Các trang gold được đối chiếu thủ công từ PDF Law_fifa.pdf. Đây là bộ khởi đầu để đo retrieval, không đánh giá câu văn Gemini.",
+  "cases": [
+    {
+      "id": "offside_definition_vi",
+      "query": "Việt vị là gì?",
+      "expected_pages": [
+        49,
+        50,
+        51
+      ],
+      "note": "Luật 11: vị trí việt vị, hành vi tham gia tích cực và lỗi việt vị."
+    },
+    {
+      "id": "offside_no_offence_vi",
+      "query": "Khi nào cầu thủ không bị phạt việt vị?",
+      "expected_pages": [
+        51
+      ],
+      "note": "Ngoại lệ: goal kick, throw-in và corner kick."
+    },
+    {
+      "id": "offside_sanction_vi",
+      "query": "Hình phạt khi phạm lỗi việt vị là gì?",
+      "expected_pages": [
+        51
+      ],
+      "note": "Đội đối phương hưởng quả phạt gián tiếp tại nơi xảy ra lỗi."
+    },
+    {
+      "id": "foul_vi",
+      "query": "Hành vi cản người nào sẽ bị phạt thẻ ?",
+      "expected_pages": [55, 56, 57],
+      "note": "Luật 12: Fouls and Misconduct - Cản người / Thẻ phạt."
+    }
+  ]
+}

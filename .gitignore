@@ -1,0 +1,31 @@
+# Environment & Secrets
+.env
+*.env
+
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Databases & Persistent Storage
+chroma_db/
+uploads/
+
+# Build & Runtime Logs
+docker-api-rebuild.log
+docker-api-rebuild.err.log
+*.log
+
+# IDE & System Files
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
