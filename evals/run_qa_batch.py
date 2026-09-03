@@ -40,6 +40,35 @@ def extract_citations(answer: str, sources: list) -> str:
             pages.add(f"trang {start}–{end}" if start != end else f"trang {start}")
     return ", ".join(sorted(pages)) if pages else "Không có trích dẫn"
 
+def format_top_5_k(sources: list) -> str:
+    """Định dạng danh sách Top-5 K chunks thành chuỗi text cho CSV."""
+    if not sources:
+        return "Không có chunks"
+    items = []
+    for i, s in enumerate(sources[:5], 1):
+        p_start = s.get("page_start")
+        p_end = s.get("page_end")
+        page_str = f"Trang {p_start}–{p_end}" if p_start != p_end else f"Trang {p_start}"
+        score = round(float(s.get("score", 0.0)), 4)
+        snippet = s.get("text", "").replace("\n", " ")[:70].strip()
+        items.append(f"[{i}] {page_str} (score {score}): \"{snippet}...\"")
+    return " | ".join(items)
+
+
+def format_top_5_k_md(sources: list) -> str:
+    """Định dạng danh sách Top-5 K chunks thành danh sách bullet có HTML <br> cho Markdown."""
+    if not sources:
+        return "Không có chunks"
+    items = []
+    for i, s in enumerate(sources[:5], 1):
+        p_start = s.get("page_start")
+        p_end = s.get("page_end")
+        page_str = f"Trang {p_start}–{p_end}" if p_start != p_end else f"Trang {p_start}"
+        score = round(float(s.get("score", 0.0)), 4)
+        snippet = s.get("text", "").replace("\n", " ")[:60].strip().replace("|", "\\|")
+        items.append(f"[{i}] {page_str} (`{score}`): <i>{snippet}...</i>")
+    return "<br>".join(items)
+
 
 def clean_for_csv(text: str) -> str:
     """Làm sạch chuỗi cho ô tính CSV, gom khoảng trắng và dòng mới."""
@@ -116,6 +145,9 @@ def run_batch_tests():
                 print(f"     -> Intent: {intent}")
                 print("-" * 75)
 
+                top_5_k_csv = format_top_5_k(sources)
+                top_5_k_md = format_top_5_k_md(sources)
+
                 results.append({
                     "stt": idx,
                     "law_group": law_group,
@@ -123,6 +155,8 @@ def run_batch_tests():
                     "answer": answer,
                     "citation": citation,
                     "top_score": top_score,
+                    "top_5_k": top_5_k_csv,
+                    "top_5_k_md": top_5_k_md,
                     "time_ms": round(elapsed_total_ms, 1),
                     "intent": intent,
                     "key_fact": key_fact,
@@ -140,6 +174,8 @@ def run_batch_tests():
                 "answer": f"LỖI: {e}",
                 "citation": "N/A",
                 "top_score": 0.0,
+                "top_5_k": "N/A",
+                "top_5_k_md": "N/A",
                 "time_ms": round(elapsed_total_ms, 1),
                 "intent": "ERROR",
                 "key_fact": key_fact,
@@ -157,6 +193,7 @@ def run_batch_tests():
         "Câu hỏi",
         "Câu trả lời RAG",
         "Trang PDF trích dẫn",
+        "Top_5_K",
         "Điểm Top Chunk",
         "Thời gian (ms)",
         "Ý định (Intent)",
@@ -173,6 +210,7 @@ def run_batch_tests():
                 "Câu hỏi": r["query"],
                 "Câu trả lời RAG": clean_for_csv(r["answer"]),
                 "Trang PDF trích dẫn": r["citation"],
+                "Top_5_K": clean_for_csv(r.get("top_5_k", "")),
                 "Điểm Top Chunk": r["top_score"],
                 "Thời gian (ms)": r["time_ms"],
                 "Ý định (Intent)": r["intent"],
@@ -190,12 +228,12 @@ def run_batch_tests():
         f.write(f"- **Thời gian phản hồi trung bình:** {avg_time:.1f} ms\n\n")
         f.write("---\n\n")
         f.write("## BẢNG KẾT QUẢ ĐỐI CHIẾU CHI TIẾT\n\n")
-        f.write("| STT | Nhóm luật | Câu hỏi | Câu trả lời RAG | Trang PDF trích dẫn | Điểm Top Chunk | Thời gian (ms) | Điểm mấu chốt đối chiếu |\n")
-        f.write("|:---:|---|---|---|:---:|:---:|:---:|---|\n")
+        f.write("| STT | Nhóm luật | Câu hỏi | Câu trả lời RAG | Trang PDF trích dẫn | Top 5 Chunks (Top-5 K) | Điểm Top Chunk | Thời gian (ms) | Điểm mấu chốt đối chiếu |\n")
+        f.write("|:---:|---|---|---|:---:|---|:---:|:---:|---|\n")
         for r in results:
             f.write(
                 f"| {r['stt']} | {r['law_group']} | {clean_for_md(r['query'])} | "
-                f"{clean_for_md(r['answer'])} | {r['citation']} | {r['top_score']} | "
+                f"{clean_for_md(r['answer'])} | {r['citation']} | {r.get('top_5_k_md', '')} | {r['top_score']} | "
                 f"{r['time_ms']} | {clean_for_md(r['key_fact'])} |\n"
             )
 
