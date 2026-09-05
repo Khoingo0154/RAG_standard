@@ -144,3 +144,37 @@ Hoặc:
 - **Kiểm tra API runtime**: `GET /health` trả về `200 OK`; `POST /query` truy xuất vector từ volume `chroma_db` và trả lời câu hỏi mượt mà trong ~9.9s.
 - **Unit tests**: Toàn bộ **81/81 tests PASSED (100%)**.
 - **Hiệu quả đạt được**: Giải phóng ~150–200MB RAM trên máy tính, giảm tải CPU Docker Desktop, loại bỏ hoàn toàn độ trễ mạng nội bộ (zero network latency) khi truy xuất vector.
+
+---
+
+## Session Log — 2026-09-05: Xây dựng Lớp RAGBenchmark OOP & Hệ thống Chỉ số Metrics Chuẩn mực
+
+### 1. Đã hoàn thành
+
+#### Module Metrics (`evals/metrics.py`)
+- **Chỉ số Retrieval chuẩn quốc tế**:
+  - `recall_at_k()`: Đo lường tỷ lệ các trang PDF cần thiết không bị bỏ sót.
+  - `precision_at_k()`: Đo lường tỷ lệ các chunks trích xuất về thực sự bao phủ trang cần thiết.
+  - `hit_at_k()`: Đo lường xác suất trúng ít nhất một trang mong muốn.
+  - `reciprocal_rank()` (MRR): Đánh giá thứ hạng xuất hiện của đoạn văn chính xác đầu tiên.
+- **Chỉ số Generation & Đánh giá trung thực**:
+  - `extract_cited_pages()`: Trích xuất các số trang PDF được AI viện dẫn trong câu trả lời.
+  - `verify_citation_faithfulness()`: Đối chiếu số trang trích dẫn với các chunks thực tế nạp vào ngữ cảnh để phát hiện và ngăn chặn ảo giác (hallucinated citation).
+  - `keyword_coverage()`: Đo lường độ bao phủ các ý mấu chốt đối chiếu (Key Fact Coverage).
+
+#### Lớp RAGBenchmark Engine (`evals/benchmark.py`)
+- **Thiết kế hướng đối tượng (OOP)**:
+  - `BenchmarkCase`: Dataclass chứa thông tin ca kiểm thử (`id`, `query`, `expected_pages`, `key_fact`, `category`).
+  - `CaseResult`: Dataclass lưu trữ chi tiết toàn bộ chỉ số đo đạc, độ trễ và danh sách chunks của từng ca.
+  - `BenchmarkSummary`: Dataclass tổng hợp chỉ số trung bình (Mean Recall, Mean Precision, Mean MRR, P95 Latency, Citation Faithfulness...) kèm các phương thức tự động xuất đa định dạng (`save_json()`, `save_csv()`, `save_markdown()`).
+  - `RAGBenchmark`: Lớp điều phối hỗ trợ 2 chế độ linh hoạt:
+    - `mode="retrieval"`: Đo đạc tốc độ cao trên tầng tìm kiếm (0 token LLM).
+    - `mode="e2e"`: Đánh giá toàn trình kết hợp LLM và kiểm chứng trích dẫn.
+- **CLI Entrypoint & Shortcut**:
+  - Tích hợp `main()` cho phép chạy trực tiếp từ dòng lệnh: `python -m evals.benchmark --mode retrieval --top-k 5`.
+  - Tạo shortcut `run_benchmark.cmd` tiện ích 1-click.
+
+#### Unit Tests & Kiểm chứng thực tế
+- Tạo `tests/test_benchmark.py` gồm 7 unit tests kiểm thử toàn diện các hàm metrics, logic tính điểm và xuất báo cáo.
+- Tổng số unit tests dự án nâng lên **88/88 tests PASSED (100%)**.
+- Chạy thực nghiệm trên `evals/fifa_law11_basic.json`: Mean Recall@5 đạt `83.3%`, Mean MRR đạt `0.8750`, Hit Rate đạt `100%`.

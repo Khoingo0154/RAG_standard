@@ -778,10 +778,10 @@ rag_project/tests/test_api.py::TestAPI::test_ingest_pdf_success PASSED
    - Prompt trong `generator.py` là hard-coded tiếng Việt
    - Chưa hỗ trợ custom system prompt hoặc prompt template qua config
 
-8. **Chưa có evaluation / metrics**
-   - Không đo được chất lượng retrieval (recall, precision)
-   - Không có ground truth dataset để benchmark
-
+8. **Hệ thống Evaluation & Benchmark đã hoàn thiện (Mới cập nhật):**
+   - Đã xây dựng `evals/metrics.py` và lớp OOP `RAGBenchmark` trong `evals/benchmark.py`.
+   - Hỗ trợ đo đạc đầy đủ: Recall@K, Precision@K, MRR, Hit@K, Latency, Fact Coverage và Citation Faithfulness.
+   - Hỗ trợ xuất đồng thời 3 định dạng: JSON, CSV (Excel), Markdown và có shortcut 1-click `run_benchmark.cmd`.
 9. **Logging còn basic**
    - Chỉ dùng `logging.basicConfig`, chưa có structured logging
    - Chưa có request_id tracing xuyên suốt

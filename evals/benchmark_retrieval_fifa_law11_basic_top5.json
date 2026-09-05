@@ -1,0 +1,350 @@
+{
+  "dataset_name": "FIFA Law 11 - basic retrieval evaluation",
+  "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+  "mode": "retrieval",
+  "top_k": 5,
+  "use_hybrid": true,
+  "use_rerank": true,
+  "timestamp": "2026-09-05 15:04:00",
+  "total_cases": 4,
+  "successful_cases": 4,
+  "failed_cases": 0,
+  "mean_recall_at_k": 0.8333,
+  "mean_precision_at_k": 0.55,
+  "mean_mrr": 0.875,
+  "mean_hit_rate": 1.0,
+  "mean_latency_ms": 5739.9,
+  "p95_latency_ms": 8658.6,
+  "mean_fact_coverage": 1.0,
+  "citation_faithfulness_rate": 1.0,
+  "cases": [
+    {
+      "case_id": "offside_definition_vi",
+      "query": "Việt vị là gì?",
+      "intent": "DOCUMENT_QUERY",
+      "latency_ms": 7211.7,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.6,
+      "mrr": 0.5,
+      "hit_at_k": 1.0,
+      "top_score": 0.9248,
+      "retrieved_pages": [
+        49,
+        50,
+        51,
+        52,
+        80,
+        81,
+        103,
+        104
+      ],
+      "retrieved_chunks": [
+        {
+          "chunk_id": "597f5af9-f218-4262-9c38-3970535d0a7d",
+          "text": "enalised, as it is the ‘illegal’ feinting that causes the goalkeeper’s encroachment. Law 11 – Offside 2. Offside offence Amended text A player in an offside position receiving the ball from an opponent who deliberately plays the ball (except from a deliberate save by any opponent) , including by deliberate handball, is not considered to have gained an advantage , unless it was a deliberate save by any opponent. Explanation Clarification that deliberate handball by a defender is considered ‘deliberate play’ for offside. As ‘legal’ deliberate play (e.g. a kick or header) causes a player in an offside position to no longer be offside, ‘illegal’ play should have the same outcome.\n161160 Laws of the Game 2020/21 | Details of all Law changes Law 12 – Fouls and Misconduct 1. Direct free kick Handling the ball New text and diagram For the purposes of determining handball offences, the upper boundary of the arm is in line with the bottom of the armpit. Explanation For the purposes of handball,",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 80,
+          "page_end": 81,
+          "chunk_index": 178,
+          "distance": 0.32049405574798584,
+          "score": 0.9248,
+          "rerank_score": 0.9061
+        },
+        {
+          "chunk_id": "d27f5375-a90e-489f-ace6-617d5bbd0015",
+          "text": "not be replaced • The referee must not abandon the match if a team is reduced to fewer than seven players Laws of the Game 2020/21 | Law 10 | Determining the Outcome of a Match\n99 Laws of the Game 2020/21 | Law 11 | Offside 1. Of fside position It is not an offence to be in an offside position. A player is in an offside position if: • any part of the head, body or feet is in the opponents’ half ( excluding the halfway line ) and • any part of the head, body or feet is nearer to the opponents’ goal line than both the ball and the second-last opponent The hands and arms of all players, including the goalkeepers, are not considered. A player is not in an offside position if level with the: • second-last opponent or • last two opponents 2. Of fside offence A player in an offside position at the moment the ball is played or touched* by a team-mate is only penalised on becoming involved in active play by: • interfering with play by playing or touching a ball passed or touched by a team-mate",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 49,
+          "page_end": 50,
+          "chunk_index": 101,
+          "distance": 0.31506240367889404,
+          "score": 0.8957,
+          "rerank_score": 0.7767
+        },
+        {
+          "chunk_id": "f5676c22-5bc6-4702-9007-0f8514c4a052",
+          "text": "ent to play or challenge for the ball; if the player moves into the way of an opponent and impedes the opponent’s progress (e.g. blocks the opponent), the offence should be penalised under Law 12 • a player in an offside position is moving towards the ball with the intention of playing the ball and is fouled before playing or attempting to play the ball, or challenging an opponent for the ball, the foul is penalised as it has occurred before the offside offence • an offence is committed against a player in an offside position who is already playing or attempting to play the ball, or challenging an opponent for the ball, the offside offence is penalised as it has occurred before the foul challenge 3. No o ffence There is no offside offence if a player receives the ball directly from: • a goal kick • a throw-in • a corner kick 4. Of fences and sanctions If an offside offence occurs, the referee awards an indirect free kick where the offence occurred, including if it is in the player’s ow",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 51,
+          "page_end": 51,
+          "chunk_index": 104,
+          "distance": 0.2937232255935669,
+          "score": 0.8039,
+          "rerank_score": 0.5098
+        },
+        {
+          "chunk_id": "8de7b748-30c1-44da-bb39-77a90d31e651",
+          "text": "nvolved in play before the next stoppage in play or the defending team has played the ball towards the halfway line and it is outside its penalty area, the player shall be considered to be positioned on the goal line for the purposes of offside. A player who deliberately leaves the field of play and re-enters without the referee’s permission and is not penalised for offside and gains an advantage must be cautioned. If an attacking player remains stationary between the goalposts and inside the goal as the ball enters the goal, a goal must be awarded unless the player commits an offside offence or a Law 12 offence, in which case play is restarted with an indirect or direct free kick. Laws of the Game 2020/21 | Law 11 | Offside\n103 Laws of the Game 2020/21 | Law 12 | Fouls and Misconduct Direct and indirect free kicks and penalty kicks can only be awarded for offences committed when the ball is in play. 1. Direct free kick A direct free kick is awarded if a player commits any of the follo",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 51,
+          "page_end": 52,
+          "chunk_index": 106,
+          "distance": 0.31562596559524536,
+          "score": 0.7003,
+          "rerank_score": 0.4937
+        },
+        {
+          "chunk_id": "3780bf6c-851d-4af5-a32f-d34e84e4cb62",
+          "text": "er (GK) Defender Attacker Referee Movement of the player Movement of the ball Interfering with play Not offside offence 2 (A) (GK) Laws of the Game 2020/21 | Practical Guidelines for Match Officials\n207206 A player in an offside position (A) may be penalised before playing or touching the ball, if, in the opinion of the referee, no other team-mate in an onside position has the opportunity to play the ball. An attacker in an offside position (1) runs towards the ball and does not touch the ball. The assistant referee must signal “goal kick”. An attacker in an offside position (A) is clearly obstructing the goalkeeper’s line of vision. The player must be penalised for preventing an opponent from playing or being able to play the ball. An attacker in an offside position (A) runs towards the ball and a team-mate in an onside position (B) also runs towards the ball and plays it. (A) did not touch the ball, so cannot be penalised. Goalkeeper (GK) Defender Attacker Referee Movement of the pla",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 103,
+          "page_end": 104,
+          "chunk_index": 231,
+          "distance": 0.32652711868286133,
+          "score": 0.5984,
+          "rerank_score": 0.2823
+        }
+      ],
+      "answer": "",
+      "key_fact": "",
+      "fact_coverage": 0.0,
+      "citation_info": {},
+      "status": "OK",
+      "error_message": ""
+    },
+    {
+      "case_id": "offside_no_offence_vi",
+      "query": "Khi nào cầu thủ không bị phạt việt vị?",
+      "intent": "DOCUMENT_QUERY",
+      "latency_ms": 8038.5,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.4,
+      "mrr": 1.0,
+      "hit_at_k": 1.0,
+      "top_score": 0.6041,
+      "retrieved_pages": [
+        49,
+        50,
+        51,
+        52,
+        80,
+        81,
+        105
+      ],
+      "retrieved_chunks": [
+        {
+          "chunk_id": "f5676c22-5bc6-4702-9007-0f8514c4a052",
+          "text": "ent to play or challenge for the ball; if the player moves into the way of an opponent and impedes the opponent’s progress (e.g. blocks the opponent), the offence should be penalised under Law 12 • a player in an offside position is moving towards the ball with the intention of playing the ball and is fouled before playing or attempting to play the ball, or challenging an opponent for the ball, the foul is penalised as it has occurred before the offside offence • an offence is committed against a player in an offside position who is already playing or attempting to play the ball, or challenging an opponent for the ball, the offside offence is penalised as it has occurred before the foul challenge 3. No o ffence There is no offside offence if a player receives the ball directly from: • a goal kick • a throw-in • a corner kick 4. Of fences and sanctions If an offside offence occurs, the referee awards an indirect free kick where the offence occurred, including if it is in the player’s ow",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 51,
+          "page_end": 51,
+          "chunk_index": 104,
+          "distance": 0.25649988651275635,
+          "score": 0.6041,
+          "rerank_score": 0.0102
+        },
+        {
+          "chunk_id": "597f5af9-f218-4262-9c38-3970535d0a7d",
+          "text": "enalised, as it is the ‘illegal’ feinting that causes the goalkeeper’s encroachment. Law 11 – Offside 2. Offside offence Amended text A player in an offside position receiving the ball from an opponent who deliberately plays the ball (except from a deliberate save by any opponent) , including by deliberate handball, is not considered to have gained an advantage , unless it was a deliberate save by any opponent. Explanation Clarification that deliberate handball by a defender is considered ‘deliberate play’ for offside. As ‘legal’ deliberate play (e.g. a kick or header) causes a player in an offside position to no longer be offside, ‘illegal’ play should have the same outcome.\n161160 Laws of the Game 2020/21 | Details of all Law changes Law 12 – Fouls and Misconduct 1. Direct free kick Handling the ball New text and diagram For the purposes of determining handball offences, the upper boundary of the arm is in line with the bottom of the armpit. Explanation For the purposes of handball,",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 80,
+          "page_end": 81,
+          "chunk_index": 178,
+          "distance": 0.27985113859176636,
+          "score": 0.5767,
+          "rerank_score": 0.0018
+        },
+        {
+          "chunk_id": "8de7b748-30c1-44da-bb39-77a90d31e651",
+          "text": "nvolved in play before the next stoppage in play or the defending team has played the ball towards the halfway line and it is outside its penalty area, the player shall be considered to be positioned on the goal line for the purposes of offside. A player who deliberately leaves the field of play and re-enters without the referee’s permission and is not penalised for offside and gains an advantage must be cautioned. If an attacking player remains stationary between the goalposts and inside the goal as the ball enters the goal, a goal must be awarded unless the player commits an offside offence or a Law 12 offence, in which case play is restarted with an indirect or direct free kick. Laws of the Game 2020/21 | Law 11 | Offside\n103 Laws of the Game 2020/21 | Law 12 | Fouls and Misconduct Direct and indirect free kicks and penalty kicks can only be awarded for offences committed when the ball is in play. 1. Direct free kick A direct free kick is awarded if a player commits any of the follo",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 51,
+          "page_end": 52,
+          "chunk_index": 106,
+          "distance": 0.2650548219680786,
+          "score": 0.5684,
+          "rerank_score": 0.001
+        },
+        {
+          "chunk_id": "a79f9f4e-dad1-495f-89bb-fd9c5edd41a7",
+          "text": "n (A) runs towards the ball but does not prevent the opponent from playing or being able to play the ball. (A) is not challenging an opponent (B) for the ball. An attacker in an offside position (A) runs towards the ball preventing the opponent (B) from playing or being able to play the ball by challenging the opponent for the ball. (A) is challenging an opponent (B) for the ball. An attacker in an offside position (B) is penalised for playing or touching the ball that rebounds, is deflected or is played from a deliberate save by the goalkeeper having been in an offside position when the ball was last touched or is played by a team-mate. An attacker in an offside position (A) is not clearly obstructing the goalkeeper’s line of vision or challenging an opponent for the ball. Goalkeeper (GK) Defender Attacker Referee Movement of the player Movement of the ball Interfering with an opponent Not offside offence Corner kick 8 (B) (A) (GK) Goalkeeper (GK) Defender Attacker Referee Movement of",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 105,
+          "page_end": 105,
+          "chunk_index": 233,
+          "distance": 0.2848682403564453,
+          "score": 0.4928,
+          "rerank_score": 0.0009
+        },
+        {
+          "chunk_id": "d27f5375-a90e-489f-ace6-617d5bbd0015",
+          "text": "not be replaced • The referee must not abandon the match if a team is reduced to fewer than seven players Laws of the Game 2020/21 | Law 10 | Determining the Outcome of a Match\n99 Laws of the Game 2020/21 | Law 11 | Offside 1. Of fside position It is not an offence to be in an offside position. A player is in an offside position if: • any part of the head, body or feet is in the opponents’ half ( excluding the halfway line ) and • any part of the head, body or feet is nearer to the opponents’ goal line than both the ball and the second-last opponent The hands and arms of all players, including the goalkeepers, are not considered. A player is not in an offside position if level with the: • second-last opponent or • last two opponents 2. Of fside offence A player in an offside position at the moment the ball is played or touched* by a team-mate is only penalised on becoming involved in active play by: • interfering with play by playing or touching a ball passed or touched by a team-mate",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 49,
+          "page_end": 50,
+          "chunk_index": 101,
+          "distance": 0.29949653148651123,
+          "score": 0.4913,
+          "rerank_score": 0.0004
+        }
+      ],
+      "answer": "",
+      "key_fact": "",
+      "fact_coverage": 0.0,
+      "citation_info": {},
+      "status": "OK",
+      "error_message": ""
+    },
+    {
+      "case_id": "offside_sanction_vi",
+      "query": "Hình phạt khi phạm lỗi việt vị là gì?",
+      "intent": "DOCUMENT_QUERY",
+      "latency_ms": 3858.9,
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.6,
+      "mrr": 1.0,
+      "hit_at_k": 1.0,
+      "top_score": 0.6724,
+      "retrieved_pages": [
+        50,
+        51,
+        52,
+        80,
+        81,
+        89
+      ],
+      "retrieved_chunks": [
+        {
+          "chunk_id": "8de7b748-30c1-44da-bb39-77a90d31e651",
+          "text": "nvolved in play before the next stoppage in play or the defending team has played the ball towards the halfway line and it is outside its penalty area, the player shall be considered to be positioned on the goal line for the purposes of offside. A player who deliberately leaves the field of play and re-enters without the referee’s permission and is not penalised for offside and gains an advantage must be cautioned. If an attacking player remains stationary between the goalposts and inside the goal as the ball enters the goal, a goal must be awarded unless the player commits an offside offence or a Law 12 offence, in which case play is restarted with an indirect or direct free kick. Laws of the Game 2020/21 | Law 11 | Offside\n103 Laws of the Game 2020/21 | Law 12 | Fouls and Misconduct Direct and indirect free kicks and penalty kicks can only be awarded for offences committed when the ball is in play. 1. Direct free kick A direct free kick is awarded if a player commits any of the follo",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 51,
+          "page_end": 52,
+          "chunk_index": 106,
+          "distance": 0.26962220668792725,
+          "score": 0.6724,
+          "rerank_score": 0.1811
+        },
+        {
+          "chunk_id": "4427fbbf-1e24-43c6-9132-062100dcec05",
+          "text": "ise To punish, usually by stopping play and awarding a free kick or penalty kick to the opposing team (see also Advantage) Play Action by a player which makes contact with the ball Playing distance Distance to the ball which allows a player to touch the ball by extending the foot/leg or jumping or, for goalkeepers, jumping with arms extended. Distance depends on the physical size of the player Q Quick free kick A free kick taken (with the referee’s permission) very quickly after play was stopped R Reckless Any action (usually a tackle or challenge) by a player which disregards (ignores) the danger to, or consequences for, the opponent Restart Any method of resuming play after it has been stopped Restart position A player’s position at a restart is determined by the position of their feet or any part of their body which is touching the ground, except as outlined in Law 11 – Offside S Sanction Disciplinary action taken by the referee Save An action by a player to stop or attempt to stop",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 89,
+          "page_end": 89,
+          "chunk_index": 200,
+          "distance": 0.29237794876098633,
+          "score": 0.6106,
+          "rerank_score": 0.1248
+        },
+        {
+          "chunk_id": "f5676c22-5bc6-4702-9007-0f8514c4a052",
+          "text": "ent to play or challenge for the ball; if the player moves into the way of an opponent and impedes the opponent’s progress (e.g. blocks the opponent), the offence should be penalised under Law 12 • a player in an offside position is moving towards the ball with the intention of playing the ball and is fouled before playing or attempting to play the ball, or challenging an opponent for the ball, the foul is penalised as it has occurred before the offside offence • an offence is committed against a player in an offside position who is already playing or attempting to play the ball, or challenging an opponent for the ball, the offside offence is penalised as it has occurred before the foul challenge 3. No o ffence There is no offside offence if a player receives the ball directly from: • a goal kick • a throw-in • a corner kick 4. Of fences and sanctions If an offside offence occurs, the referee awards an indirect free kick where the offence occurred, including if it is in the player’s ow",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 51,
+          "page_end": 51,
+          "chunk_index": 104,
+          "distance": 0.2535834312438965,
+          "score": 0.6062,
+          "rerank_score": 0.0546
+        },
+        {
+          "chunk_id": "597f5af9-f218-4262-9c38-3970535d0a7d",
+          "text": "enalised, as it is the ‘illegal’ feinting that causes the goalkeeper’s encroachment. Law 11 – Offside 2. Offside offence Amended text A player in an offside position receiving the ball from an opponent who deliberately plays the ball (except from a deliberate save by any opponent) , including by deliberate handball, is not considered to have gained an advantage , unless it was a deliberate save by any opponent. Explanation Clarification that deliberate handball by a defender is considered ‘deliberate play’ for offside. As ‘legal’ deliberate play (e.g. a kick or header) causes a player in an offside position to no longer be offside, ‘illegal’ play should have the same outcome.\n161160 Laws of the Game 2020/21 | Details of all Law changes Law 12 – Fouls and Misconduct 1. Direct free kick Handling the ball New text and diagram For the purposes of determining handball offences, the upper boundary of the arm is in line with the bottom of the armpit. Explanation For the purposes of handball,",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 80,
+          "page_end": 81,
+          "chunk_index": 178,
+          "distance": 0.29590904712677,
+          "score": 0.6046,
+          "rerank_score": 0.0295
+        },
+        {
+          "chunk_id": "37c32ce5-ae95-463a-8ff5-b00ea1fd693d",
+          "text": "he moment the ball is played or touched* by a team-mate is only penalised on becoming involved in active play by: • interfering with play by playing or touching a ball passed or touched by a team-mate or • interfering with an opponent by: • preventing an opponent from playing or being able to play the ball by clearly obstructing the opponent’s line of vision or • challenging an opponent for the ball or *The first point of contact of the ‘play’ or ‘touch’ of the ball should be used Law 11 Offside\n101100 • clearly attempting to play a ball which is close when this action impacts on an opponent or • making an obvious action which clearly impacts on the ability of an opponent to play the ball or • gaining an advantage by playing the ball or interfering with an opponent when it has: • rebounded or been deflected off the goalpost, crossbar, match official or an opponent • been deliberately saved by any opponent A player in an offside position receiving the ball from an opponent who deliberat",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 50,
+          "page_end": 51,
+          "chunk_index": 102,
+          "distance": 0.3075176477432251,
+          "score": 0.4653,
+          "rerank_score": 0.001
+        }
+      ],
+      "answer": "",
+      "key_fact": "",
+      "fact_coverage": 0.0,
+      "citation_info": {},
+      "status": "OK",
+      "error_message": ""
+    },
+    {
+      "case_id": "foul_vi",
+      "query": "Hành vi cản người nào sẽ bị phạt thẻ ?",
+      "intent": "DOCUMENT_QUERY",
+      "latency_ms": 3850.6,
+      "recall_at_k": 0.3333,
+      "precision_at_k": 0.6,
+      "mrr": 1.0,
+      "hit_at_k": 1.0,
+      "top_score": 0.6526,
+      "retrieved_pages": [
+        54,
+        55,
+        58
+      ],
+      "retrieved_chunks": [
+        {
+          "chunk_id": "5fad105b-1341-46fe-b8c3-edbd204b7a5d",
+          "text": "start of the match, a player or team official commits a sending-off offence, the referee has the authority to prevent the player or team official taking part in the match (see Law 3.6); the referee will report any other misconduct. A player or team official who commits a cautionable or sending-off offence, either on or off the field of play, is disciplined according to the offence. The yellow card communicates a caution and the red card communicates a sending-off. Only a player, substitute, substituted player or team official may be shown the red or yellow card. Players, substitutes and substituted players Delaying the restart of play to show a card Once the referee has decided to caution or send off a player, play must not be restarted until the sanction has been administered, unless the non-offending team takes a quick free kick, has a clear goal-scoring opportunity and the referee has not started the disciplinary sanction procedure. The sanction is administered at the next stoppage",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 55,
+          "page_end": 55,
+          "chunk_index": 115,
+          "distance": 0.26219433546066284,
+          "score": 0.6526,
+          "rerank_score": 0.2586
+        },
+        {
+          "chunk_id": "8c96e515-ca1a-41ed-b467-508819fbaf1e",
+          "text": "ayer, substitute, team official, match official, spectator or any other person (e.g. ball boy/girl, security or competition official etc.) • receiving a second caution in the same match • using offensive, insulting or abusive language and/or gestures • using unauthorised electronic or communication equipment and/or behaving in an inappropriate manner as the result of using electronic or communication equipment • violent conduct Offences where an object (or the ball) is thrown In all cases, the referee takes the appropriate disciplinary action: • reckless – caution the offender for unsporting behaviour • using excessive force – send off the offender for violent conduct 4. R estart of play after fouls and misconduct If the ball is out of play, play is restarted according to the previous decision. If the ball is in play and a player commits a physical offence inside the field of play against: Laws of the Game 2020/21 | Law 12 | Fouls and Misconduct • an opponent – an indirect or direct fr",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 58,
+          "page_end": 58,
+          "chunk_index": 129,
+          "distance": 0.2471662163734436,
+          "score": 0.6017,
+          "rerank_score": 0.0043
+        },
+        {
+          "chunk_id": "076b1660-d6b6-4440-b0d6-70913e7180e4",
+          "text": "ping a promising attack, the player is not cautioned. Laws of the Game 2020/21 | Law 12 | Fouls and Misconduct Advantage should not be applied in situations involving serious foul play, violent conduct or a second cautionable offence unless there is a clear opportunity to score a goal. The referee must send off the player when the ball is next out of play, but if the player plays the ball or challenges/interferes with an opponent, the referee will stop play, send off the player and restart with an indirect free kick, unless the player committed a more serious offence. If a defender starts holding an attacker outside the penalty area and continues holding inside the penalty area, the referee must award a penalty kick. Cautionable offences A player is cautioned if guilty of: • delaying the restart of play • dissent by word or action • entering, re-entering or deliberately leaving the field of play without the referee’s permission • failing to respect the required distance when play is re",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 55,
+          "page_end": 55,
+          "chunk_index": 117,
+          "distance": 0.23867368698120117,
+          "score": 0.579,
+          "rerank_score": 0.0746
+        },
+        {
+          "chunk_id": "438abb92-5aa6-4aa2-a5d7-75e3b50c640e",
+          "text": "ands or arms, except if the ball rebounds from the goalkeeper or the goalkeeper has made a save • holding the ball in the outstretched open hand • bouncing it on the ground or throwing it in the air A goalkeeper cannot be challenged by an opponent when in control of the ball with the hand(s). Playing in a dangerous manner Playing in a dangerous manner is any action that, while trying to play the ball, threatens injury to someone (including the player themself) and includes preventing a nearby opponent from playing the ball for fear of injury. A scissors or bicycle kick is permissible provided that it is not dangerous to an opponent. Impeding the progress of an opponent without contact Impeding the progress of an opponent means moving into the opponent’s path to obstruct, block, slow down or force a change of direction when the ball is not within playing distance of either player. All players have a right to their position on the field of play; being in the way of an opponent is not the",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 54,
+          "page_end": 54,
+          "chunk_index": 113,
+          "distance": 0.24315983057022095,
+          "score": 0.575,
+          "rerank_score": 0.0001
+        },
+        {
+          "chunk_id": "65be37e0-710c-4391-a91f-7df26c7e348a",
+          "text": "non-offending team takes a quick free kick, has a clear goal-scoring opportunity and the referee has not started the disciplinary sanction procedure. The sanction is administered at the next stoppage; if the offence was denying the opposing team an obvious goal-scoring opportunity, the player is cautioned ; if the offence interfered with or stopped a promising attack, the player is not cautioned. Advantage If the referee plays the advantage for an offence for which a caution/ sending-off would have been issued had play been stopped, this caution/ sending-off must be issued when the ball is next out of play. However, if the offence was denying the opposing team an obvious goal-scoring opportunity, the player is cautioned for unsporting behaviour; if the offence was interfering with or stopping a promising attack, the player is not cautioned. Laws of the Game 2020/21 | Law 12 | Fouls and Misconduct Advantage should not be applied in situations involving serious foul play, violent conduc",
+          "file_id": "8f525964-a864-43ef-b87b-34f6482d44f1",
+          "page_start": 55,
+          "page_end": 55,
+          "chunk_index": 116,
+          "distance": 0.2555611729621887,
+          "score": 0.5473,
+          "rerank_score": 0.0032
+        }
+      ],
+      "answer": "",
+      "key_fact": "",
+      "fact_coverage": 0.0,
+      "citation_info": {},
+      "status": "OK",
+      "error_message": ""
+    }
+  ]
+}

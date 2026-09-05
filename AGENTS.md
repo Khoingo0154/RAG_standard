@@ -90,6 +90,15 @@ Hệ thống RAG: Query ➔ QueryRouter ➔ (Chitchat / Out-of-scope / RAG Pipel
 - **Hiệu quả:** Giải phóng ~150–200MB RAM và CPU trên Docker Desktop; tốc độ truy xuất vector đạt mức tối đa do đọc trực tiếp qua bộ nhớ tiến trình (zero network overhead).
 - **Kiểm chứng:** Toàn bộ 81/81 unit tests và API `/query` phản hồi ổn định 100%.
 - **Rebuild Docker Image:** Rebuild `rag_project-api:latest` thành công với đầy đủ dependencies `rank-bm25` và `flashrank`.
+
+### Giai đoạn 6 (Ngày 05/09) — Xây dựng Lớp Benchmark OOP & Hệ thống Chỉ số Metrics Chuẩn mực
+- **Module Chỉ số (`evals/metrics.py`):** Cài đặt các hàm đo lường chuẩn mực: `recall_at_k`, `precision_at_k`, `hit_at_k`, `reciprocal_rank` (MRR), `verify_citation_faithfulness` (phát hiện ảo giác trích dẫn) và `keyword_coverage` (đo độ bao phủ sự thật).
+- **Lớp RAGBenchmark Engine (`evals/benchmark.py`):** Xây dựng các lớp OOP `BenchmarkCase`, `CaseResult`, `BenchmarkSummary` và `RAGBenchmark` hỗ trợ 2 chế độ:
+  - Mode `retrieval`: Đo đạc tầng tìm kiếm (0 token LLM), tính Recall, Precision, MRR, Hit Rate và độ trễ.
+  - Mode `e2e`: Đánh giá toàn trình từ Retrieval đến Generation, đo độ trung thực trích dẫn và độ bao phủ ý chính.
+  - Tự động xuất báo cáo đa định dạng: JSON, CSV (Excel), Markdown.
+- **Unit Tests:** Thêm 7 unit tests mới trong `tests/test_benchmark.py`, nâng tổng số test lên **88/88 tests PASSED (100%)**.
+- **Shortcut tiện ích:** Tạo `run_benchmark.cmd` (1-click chạy kiểm thử đánh giá).
 ---
 
 ## 3. Các lệnh điều khiển thiết yếu (Chạy từ CMD máy thật)
@@ -120,6 +129,9 @@ docker compose --profile swagger run --rm api python -m evals.retrieval_eval --f
 
 :: 8. Chạy kiểm thử tự động 20 câu hỏi Luật bóng đá và xuất file CSV + Markdown:
 run_qa_test.cmd
+
+:: 9. Chạy RAG Benchmark Engine OOP chuyên nghiệp:
+run_benchmark.cmd
 ```
 
 ---
@@ -138,11 +150,12 @@ run_qa_test.cmd
 - [x] Xây dựng Batch QA Test Suite 20 câu hỏi, runner tự động xuất file `results_qa_testset.csv` & `results_qa_testset.md`.
 - [x] Cô lập phạm vi pytest bằng `pytest.ini` và `__test__ = False`.
 - [x] Tạo đầy đủ các script tiện ích: `run_eval.cmd`, `view_logs.cmd`, `run_swagger.cmd`, `run_telegram.cmd`, `run_qa_test.cmd`, `inspect_chunks.cmd`.
-- [x] Toàn bộ test suite đạt chuẩn (81/81 unit tests passed).
+- [x] Toàn bộ test suite đạt chuẩn (88/88 unit tests passed).
 - [x] Chuẩn hóa cây thư mục: chuyển tài liệu logic/hệ thống vào `docs/`.
 - [x] **Hybrid Search (BM25 + ChromaDB Vector):** Kết hợp tìm kiếm từ khóa chính xác BM25 + Vector Search qua RRF Fusion.
 - [x] **Reranking (FlashRank Cross-Encoder):** Chấm điểm lại ứng viên bằng Cross-Encoder ONNX nhẹ trên CPU.
 - [x] **Tối ưu hóa hạ tầng Docker:** Loại bỏ container `rag_chroma` thừa, chuẩn hóa PersistentClient nhúng trên volume `chroma_db`.
+- [x] **Lớp RAGBenchmark OOP & Hệ thống Metrics:** Xây dựng `evals/benchmark.py` và `evals/metrics.py` đo lường đa chiều toàn diện.
 
 ### Kế hoạch tiếp theo (Next Steps):
 - [ ] **Conversational Memory & Multi-turn Chat:** Tích hợp bộ nhớ ngữ cảnh cho Telegram Bot và API `/query`.
