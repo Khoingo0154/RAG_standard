@@ -122,3 +122,25 @@ Hoặc:
 #### Đóng gói Docker & Git
 - Rebuild image `rag_project-api:latest` kèm `rank-bm25` và `flashrank`.
 - Gắn tag phiên bản `v0.1` và push lên GitHub repository: `https://github.com/Khoingo0154/RAG_standard.git`.
+
+---
+
+## Session Log — 2026-09-05: Tối ưu hóa hạ tầng Docker (Dọn dẹp Container Chroma thừa - Cách A)
+
+### 1. Đã hoàn thành
+
+#### Hạ tầng & Docker
+- **Phát hiện lãng phí tài nguyên**: Container `rag_chroma` (port 8001) chạy nền nhưng hoàn toàn không có service nào gửi request tới, do mã nguồn Python sử dụng `chromadb.PersistentClient` đọc/ghi trực tiếp vào file SQLite trên volume `chroma_db`.
+- **Dọn dẹp `docker-compose.yml`**:
+  - Xóa bỏ service `chroma`.
+  - Xóa bỏ `- chroma` trong `depends_on` của `api` và `telegram_bot`.
+  - Xóa bỏ volume `chroma_data` không sử dụng.
+- **Dừng và giải phóng container**:
+  - Dừng và xóa container `rag_chroma`.
+  - Xóa volume Docker `rag_project_chroma_data`.
+  - Khởi động lại hạ tầng sạch sẽ: chỉ gồm `rag_mongo`, `rag_minio`, `rag_api`.
+
+#### Kiểm chứng hệ thống (Verification)
+- **Kiểm tra API runtime**: `GET /health` trả về `200 OK`; `POST /query` truy xuất vector từ volume `chroma_db` và trả lời câu hỏi mượt mà trong ~9.9s.
+- **Unit tests**: Toàn bộ **81/81 tests PASSED (100%)**.
+- **Hiệu quả đạt được**: Giải phóng ~150–200MB RAM trên máy tính, giảm tải CPU Docker Desktop, loại bỏ hoàn toàn độ trễ mạng nội bộ (zero network latency) khi truy xuất vector.

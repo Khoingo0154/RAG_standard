@@ -8,16 +8,6 @@ services:
       - mongo_data:/data/db
     restart: unless-stopped
 
-  chroma:
-    image: chromadb/chroma:latest
-    container_name: rag_chroma
-    ports:
-      - "8001:8000"
-    volumes:
-      - chroma_data:/chroma/chroma
-    environment:
-      - IS_PERSISTENT=TRUE
-    restart: unless-stopped
 
   minio:
     image: minio/minio:latest
@@ -51,7 +41,6 @@ services:
       - chroma_db:/data/chroma_db
     depends_on:
       - mongodb
-      - chroma
       - minio
     restart: unless-stopped
 
@@ -72,12 +61,10 @@ services:
       - chroma_db:/data/chroma_db
     depends_on:
       - mongodb
-      - chroma
       - minio
     restart: unless-stopped
 
 volumes:
   mongo_data:
-  chroma_data:
   chroma_db:
   minio_data:

@@ -534,11 +534,10 @@ services:
     ports: ["27017:27017"]
     volumes: [mongo_data:/data/db]
 
-  chroma:
-    image: chromadb/chroma:latest
-    ports: ["8001:8000"]
-    volumes: [chroma_data:/chroma/chroma]
-    environment: [IS_PERSISTENT=TRUE]
+  minio:
+    image: minio/minio:latest
+    ports: ["9000:9000", "9001:9001"]
+    volumes: [minio_data:/data]
 
   api:
     build: { context: ., dockerfile: Dockerfile }
@@ -546,9 +545,9 @@ services:
     environment:
       - CHROMA_PATH=/data/chroma_db
       - MONGO_URI=mongodb://mongodb:27017
+      - MINIO_ENDPOINT=minio:9000
     volumes: [chroma_db:/data/chroma_db]
-    depends_on: [mongodb, chroma]
-```
+    depends_on: [mongodb, minio]
 
 ---
 

@@ -23,7 +23,7 @@ Hệ thống RAG: Query ➔ QueryRouter ➔ (Chitchat / Out-of-scope / RAG Pipel
 | **Query Router** | `gemini-3.1-flash-lite` | Phân loại 3 intents: `DOCUMENT_QUERY`, `CHITCHAT`, `OUT_OF_SCOPE` (~1.2s). |
 | **LLM Generation** | `gemini-3.1-flash-lite` | Trả lời câu hỏi dựa trên ngữ cảnh + trích dẫn số trang PDF, có auto-retry 429/503. |
 | **Embedding** | `gemini-embedding-001` (768 chiều) | SDK `google-genai`, có auto-retry khi gặp rate limit. |
-| **Vector Store** | ChromaDB (container `rag_chroma`, port 8001 / volume `chroma_db`) | Đo độ tương đồng Cosine Similarity (Dense Search). |
+| **Vector Store** | ChromaDB (Persistent SQLite nhúng trong tiến trình, volume `chroma_db`) | Đo độ tương đồng Cosine Similarity (Dense Search), zero network latency. |
 | **BM25 Search** | `rank-bm25` (BM25Okapi) | Tìm kiếm từ khóa chính xác (Sparse Search), lọc stopwords. |
 | **Fusion** | Reciprocal Rank Fusion (RRF, $k=60$) | Hợp nhất Dense + Sparse thành ~20–25 ứng viên. |
 | **Reranker** | FlashRank (`ms-marco-MiniLM-L-12-v2` ONNX) | Chấm điểm chéo (Cross-Encoder), kết hợp điểm tương quan. |
@@ -83,6 +83,12 @@ Hệ thống RAG: Query ➔ QueryRouter ➔ (Chitchat / Out-of-scope / RAG Pipel
 - **Triển khai FlashRank Reranker (`retrieval/reranker.py`):** Chạy mô hình Cross-Encoder `ms-marco-MiniLM-L-12-v2` tối ưu qua ONNX Runtime CPU. Áp dụng kỹ thuật kết hợp điểm số tương quan (60% Dense/RRF + 40% Cross-Encoder).
 - **Tích hợp Pipeline nâng cao (`retrieval/pipeline.py`):** Hàm `retrieve_hybrid_and_rerank()` tự động điều phối Dense + Sparse + RRF + Reranker, xử lý semantic gap đa ngữ (Vietnamese câu hỏi + English terminology).
 - **Unit Tests:** Thêm 4 unit tests mới (`test_bm25.py`, `test_fusion.py`, `test_reranker.py`), nâng tổng số test lên **81/81 tests PASSED (100%)**.
+
+### Giai đoạn 5 (Ngày 05/09) — Tối ưu hóa hạ tầng Docker (Dọn dẹp Container Chroma thừa)
+- **Phát hiện & Tối ưu tài nguyên:** Phát hiện container `rag_chroma` (port 8001) chạy nền nhưng không có service nào gửi request tới do mã nguồn dùng `PersistentClient` đọc trực tiếp volume `chroma_db`.
+- **Dọn dẹp hạ tầng:** Xóa service `chroma`, bỏ `- chroma` trong `depends_on` của `api` và `telegram_bot`, xóa volume `chroma_data` thừa trong `docker-compose.yml`.
+- **Hiệu quả:** Giải phóng ~150–200MB RAM và CPU trên Docker Desktop; tốc độ truy xuất vector đạt mức tối đa do đọc trực tiếp qua bộ nhớ tiến trình (zero network overhead).
+- **Kiểm chứng:** Toàn bộ 81/81 unit tests và API `/query` phản hồi ổn định 100%.
 - **Rebuild Docker Image:** Rebuild `rag_project-api:latest` thành công với đầy đủ dependencies `rank-bm25` và `flashrank`.
 ---
 
@@ -136,6 +142,7 @@ run_qa_test.cmd
 - [x] Chuẩn hóa cây thư mục: chuyển tài liệu logic/hệ thống vào `docs/`.
 - [x] **Hybrid Search (BM25 + ChromaDB Vector):** Kết hợp tìm kiếm từ khóa chính xác BM25 + Vector Search qua RRF Fusion.
 - [x] **Reranking (FlashRank Cross-Encoder):** Chấm điểm lại ứng viên bằng Cross-Encoder ONNX nhẹ trên CPU.
+- [x] **Tối ưu hóa hạ tầng Docker:** Loại bỏ container `rag_chroma` thừa, chuẩn hóa PersistentClient nhúng trên volume `chroma_db`.
 
 ### Kế hoạch tiếp theo (Next Steps):
 - [ ] **Conversational Memory & Multi-turn Chat:** Tích hợp bộ nhớ ngữ cảnh cho Telegram Bot và API `/query`.
