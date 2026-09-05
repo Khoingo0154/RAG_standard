@@ -4,121 +4,101 @@
   "cases": [
     {
       "id": "q01_offside_definition",
-      "law_group": "Luật 11 - Việt vị",
       "query": "Thế nào là vị trí việt vị và thời điểm xác định một cầu thủ có việt vị hay không được tính vào lúc nào?",
       "key_fact": "Vị trí: bất kỳ phần nào của đầu, thân mình, bàn chân ở phần sân đối phương và gần đường biên ngang đối phương hơn bóng và đối thủ áp chót. Thời điểm: tính vào khoảnh khắc bóng được đồng đội chuyền hoặc chạm vào."
     },
     {
       "id": "q02_handball_criteria",
-      "law_group": "Luật 12 - Lỗi chạm tay",
       "query": "Trọng tài căn cứ vào những tiêu chí nào để xác định một cầu thủ phạm lỗi dùng tay chơi bóng (handball)?",
       "key_fact": "Cố ý dùng tay/cánh tay chạm bóng; tay mở rộng bất thường làm cơ thể phình to không tự nhiên; ghi bàn trực tiếp bằng tay hoặc ngay sau khi bóng chạm tay dù vô tình."
     },
     {
       "id": "q03_penalty_goalkeeper_position",
-      "law_group": "Luật 14 - Quả phạt đền",
       "query": "Khi thực hiện quả phạt đền (penalty), thủ môn phải đứng ở vị trí nào trên vạch vôi?",
       "key_fact": "Thủ môn phải đứng trên vạch cầu môn, đối mặt cầu thủ sút, giữa 2 cột dọc; khi bóng được sút, ít nhất một phần của một bàn chân phải chạm hoặc ngang bằng với vạch vôi."
     },
     {
       "id": "q04_ball_in_out_of_play",
-      "law_group": "Luật 9 - Bóng trong & ngoài cuộc",
       "query": "Khi nào thì quả bóng được coi là đã hoàn toàn ra ngoài sân thi đấu hoặc đã thành bàn thắng?",
       "key_fact": "Bóng chỉ được coi là ra ngoài sân hoặc thành bàn thắng khi TOÀN BỘ quả bóng đã hoàn toàn vượt qua vạch biên hoặc vạch cầu môn (dù trên mặt đất hay trên không)."
     },
     {
       "id": "q05_minimum_players",
-      "law_group": "Luật 3 - Số lượng cầu thủ",
       "query": "Số lượng cầu thủ tối thiểu trên sân của một đội để trận đấu có thể tiếp tục diễn ra là bao nhiêu?",
       "key_fact": "Một đội phải có tối thiểu 7 cầu thủ trên sân (bao gồm cả thủ môn). Nếu ít hơn 7 người, trận đấu sẽ bị dừng và không thể tiếp tục."
     },
     {
       "id": "q06_offside_exceptions",
-      "law_group": "Luật 11 - Ngoại lệ việt vị",
       "query": "Cầu thủ đứng ở vị trí việt vị nhận bóng trực tiếp từ những tình huống cố định nào thì KHÔNG bị thổi phạt?",
       "key_fact": "Không bị phạt việt vị nếu nhận bóng trực tiếp từ: quả ném biên (throw-in), quả phạt góc (corner kick), hoặc quả phát bóng (goal kick)."
     },
     {
       "id": "q07_ball_hits_referee",
-      "law_group": "Luật 9 - Bóng chạm trọng tài",
       "query": "Nếu bóng vô tình đập trúng người trọng tài rồi bay thẳng vào lưới thì bàn thắng có được công nhận không, xử lý thế nào?",
       "key_fact": "Bàn thắng KHÔNG được công nhận. Trọng tài cho dừng trận đấu và thả bóng rơi (dropped ball) cho thủ môn của đội phòng ngự trong vòng cấm."
     },
     {
       "id": "q08_backpass_to_goalkeeper",
-      "law_group": "Luật 12 - Lỗi chuyền về",
       "query": "Hậu vệ cố ý dùng chân chuyền bóng về và thủ môn dùng tay bắt bóng trong vòng cấm thì trọng tài xử phạt như thế nào?",
       "key_fact": "Trọng tài thổi phạt gián tiếp (Indirect free kick) cho đối phương tại nơi thủ môn chạm tay vào bóng. Không có thẻ phạt cá nhân nào."
     },
     {
       "id": "q09_penalty_rebound_woodwork",
-      "law_group": "Luật 14 - Đá bồi phạt đền",
       "query": "Cầu thủ thực hiện quả phạt đền sút trúng xà ngang bật ra, cầu thủ đó lao vào đá bồi ghi bàn mà chưa có ai chạm bóng thì bàn thắng có hợp lệ không?",
       "key_fact": "Bàn thắng KHÔNG hợp lệ vì lỗi chạm bóng hai lần liên tiếp (double touch). Trọng tài cho đội phòng ngự hưởng quả phạt gián tiếp tại vị trí bóng bị chạm lần hai."
     },
     {
       "id": "q10_throw_in_to_goalkeeper",
-      "law_group": "Luật 12 - Ném biên cho thủ môn",
       "query": "Thủ môn có được dùng tay bắt quả bóng ném biên do chính đồng đội của mình ném vào không?",
       "key_fact": "KHÔNG được phép. Nếu thủ môn dùng tay bắt bóng từ quả ném biên trực tiếp của đồng đội, đội đối phương được hưởng quả phạt gián tiếp."
     },
     {
       "id": "q11_dogso_in_penalty_area",
-      "law_group": "Luật 12 - Thẻ phạt DOGSO",
       "query": "Trong vòng cấm địa, hậu vệ phạm lỗi ngăn cản cơ hội ghi bàn rõ rệt của đối phương nhưng có nỗ lực tranh cướp bóng hợp lệ thì bị phạt thẻ vàng hay thẻ đỏ?",
       "key_fact": "Hậu vệ bị phạt THẺ VÀNG (luật tránh hình phạt kép) nếu có nỗ lực chơi bóng hoặc tranh chấp bóng hợp lệ; chỉ bị THẺ ĐỎ nếu kéo, đẩy, không có cơ hội chơi bóng hoặc dùng tay."
     },
     {
       "id": "q12_shirt_removal_celebration_var",
-      "law_group": "Luật 12 - Thẻ vàng cởi áo ăn mừng",
       "query": "Cầu thủ cởi áo ăn mừng bàn thắng bị phạt thẻ vàng, nhưng sau đó VAR can thiệp hủy bàn thắng thì thẻ vàng đó có bị xóa không?",
       "key_fact": "Thẻ vàng VẪN ĐƯỢC GIỮ NGUYÊN. Hành vi cởi áo hoặc trèo rào ăn mừng là lỗi phi thể thao độc lập với việc bàn thắng có hợp lệ hay không."
     },
     {
       "id": "q13_substitute_stopping_goal",
-      "law_group": "Luật 3 & 12 - Cầu thủ dự bị vào sân",
       "query": "Cầu thủ dự bị chưa được phép của trọng tài đã tự ý chạy vào sân phá bóng cứu thua ngay trên vạch vôi thì trọng tài xử lý thế nào?",
       "key_fact": "Trọng tài phạt THẺ ĐỎ truất quyền thi đấu của cầu thủ dự bị và cho đội đối phương hưởng QUẢ PHẠT ĐỀN (Penalty kick)."
     },
     {
       "id": "q14_biting_or_spitting",
-      "law_group": "Luật 12 - Hành vi bạo lực",
       "query": "Hành vi nhổ nước bọt hoặc cắn đối thủ, đồng đội hoặc trọng tài bị xử lý thẻ gì và đội đối phương được hưởng quả phạt nào?",
       "key_fact": "Phạt THẺ ĐỎ trực tiếp (sending-off). Đội đối phương được hưởng QUẢ PHẠT TRỰC TIẾP (Direct free kick) hoặc phạt đền nếu xảy ra trong vòng cấm."
     },
     {
       "id": "q15_team_official_misconduct",
-      "law_group": "Luật 12 - Quan chức đội bóng vi phạm",
       "query": "Nếu một thành viên ban huấn luyện trong khu vực kỹ thuật có hành vi ném chai nước phản đối thì trọng tài xử lý ra sao nếu không xác định được danh tính người ném?",
       "key_fact": "Nếu không xác định được danh tính cụ thể người vi phạm, Huấn luyện viên trưởng (senior coach/head coach) trong khu vực kỹ thuật sẽ phải nhận thẻ phạt thay."
     },
     {
       "id": "q16_throw_in_procedure",
-      "law_group": "Luật 15 - Quy cách ném biên",
       "query": "Một quả ném biên hợp lệ đòi hỏi cầu thủ ném biên phải thực hiện đúng những động tác cơ bản nào?",
       "key_fact": "Quay mặt vào sân thi đấu; một phần mỗi bàn chân chạm đường biên hoặc mặt đất bên ngoài đường biên; ném bóng bằng cả hai tay từ phía sau và qua đầu từ vị trí bóng rời sân."
     },
     {
       "id": "q17_goal_kick_procedure",
-      "law_group": "Luật 16 - Quy định phát bóng",
       "query": "Khi thực hiện quả phát bóng (goal kick), quả bóng có bắt buộc phải bay ra khỏi vòng cấm địa mới được coi là trong cuộc không?",
       "key_fact": "KHÔNG bắt buộc. Theo luật cập nhật, bóng ở trong cuộc ngay khi được đá và di chuyển rõ ràng (đồng đội có thể nhận bóng ngay trong vòng cấm)."
     },
     {
       "id": "q18_throw_in_directly_into_goal",
-      "law_group": "Luật 15 - Ném biên vào lưới",
       "query": "Nếu một cầu thủ ném biên thẳng vào lưới của đội đối phương mà không chạm bất kỳ ai thì bàn thắng có được công nhận không, xử lý tiếp tục thế nào?",
       "key_fact": "Bàn thắng KHÔNG được công nhận (không thể ghi bàn trực tiếp từ quả ném biên). Trận đấu tiếp tục bằng quả phát bóng lên (goal kick) cho đội đối phương."
     },
     {
       "id": "q19_kicks_from_penalty_mark_equate",
-      "law_group": "Luật 10 - Cân bằng quân số sút luân lưu",
       "query": "Trước khi bước vào loạt sút luân lưu phân định thắng thua, nếu Đội A có 10 người (do thẻ đỏ) còn Đội B có đủ 11 người thì Đội B có phải giảm bớt một người không?",
       "key_fact": "CÓ. Đội có nhiều cầu thủ hơn phải giảm số lượng cầu thủ bằng với đội bị thiếu người (luật cân bằng quân số) và thông báo cho trọng tài tên/số áo cầu thủ bị loại trừ."
     },
     {
       "id": "q20_var_intervention_categories",
-      "law_group": "Giao thức VAR",
       "query": "Trợ lý trọng tài video (VAR) chỉ được phép can thiệp vào 4 nhóm tình huống cụ thể nào trong trận đấu?",
       "key_fact": "Bao gồm 4 tình huống: (1) Bàn thắng/không bàn thắng; (2) Phạt đền/không phạt đền; (3) Thẻ đỏ trực tiếp (không áp dụng thẻ vàng thứ 2); (4) Nhận diện nhầm cầu thủ bị phạt thẻ."
     }

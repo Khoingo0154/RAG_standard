@@ -105,13 +105,10 @@ def run_batch_tests():
 
     for idx, case in enumerate(cases, 1):
         q_id = case.get("id")
-        law_group = case.get("law_group", "N/A")
         query = case.get("query", "")
         key_fact = case.get("key_fact", "")
 
-        print(f"[{idx:02d}/{total:02d}] [{law_group}]")
-        print(f"     Hỏi: \"{query}\"")
-
+        print(f"[{idx:02d}/{total:02d}] Hỏi: \"{query}\"")
         payload = {
             "query": query,
             "file_id": DEFAULT_FILE_ID,
@@ -141,16 +138,22 @@ def run_batch_tests():
                 if sources and "score" in sources[0]:
                     top_score = round(sources[0]["score"], 4)
 
-                print(f"     -> Phản hồi trong {elapsed_total_ms:.0f}ms | Top Score: {top_score} | Citation: {citation}")
-                print(f"     -> Intent: {intent}")
-                print("-" * 75)
-
                 top_5_k_csv = format_top_5_k(sources)
                 top_5_k_md = format_top_5_k_md(sources)
 
+                print(f"     -> Phản hồi trong {elapsed_total_ms:.0f}ms | Top Score: {top_score} | Citation: {citation}")
+                print(f"     -> Intent: {intent}")
+                print("     -> Top-5 K Chunks được truy xuất:")
+                for s_i, s in enumerate(sources[:5], 1):
+                    p_start = s.get("page_start")
+                    p_end = s.get("page_end")
+                    page_str = f"Trang {p_start}–{p_end}" if p_start != p_end else f"Trang {p_start}"
+                    s_score = round(float(s.get("score", 0.0)), 4)
+                    snippet = s.get("text", "").replace("\n", " ")[:75].strip()
+                    print(f"        [{s_i}] {page_str} (Score: {s_score}): \"{snippet}...\"")
+                print("-" * 75)
                 results.append({
                     "stt": idx,
-                    "law_group": law_group,
                     "query": query,
                     "answer": answer,
                     "citation": citation,
@@ -169,7 +172,6 @@ def run_batch_tests():
             print("-" * 75)
             results.append({
                 "stt": idx,
-                "law_group": law_group,
                 "query": query,
                 "answer": f"LỖI: {e}",
                 "citation": "N/A",
@@ -189,7 +191,6 @@ def run_batch_tests():
     # 1. Xuất file CSV (với BOM utf-8-sig để Excel mở không lỗi font tiếng Việt)
     fieldnames = [
         "STT",
-        "Nhóm luật",
         "Câu hỏi",
         "Câu trả lời RAG",
         "Trang PDF trích dẫn",
@@ -206,7 +207,6 @@ def run_batch_tests():
         for r in results:
             writer.writerow({
                 "STT": r["stt"],
-                "Nhóm luật": r["law_group"],
                 "Câu hỏi": r["query"],
                 "Câu trả lời RAG": clean_for_csv(r["answer"]),
                 "Trang PDF trích dẫn": r["citation"],
@@ -228,11 +228,11 @@ def run_batch_tests():
         f.write(f"- **Thời gian phản hồi trung bình:** {avg_time:.1f} ms\n\n")
         f.write("---\n\n")
         f.write("## BẢNG KẾT QUẢ ĐỐI CHIẾU CHI TIẾT\n\n")
-        f.write("| STT | Nhóm luật | Câu hỏi | Câu trả lời RAG | Trang PDF trích dẫn | Top 5 Chunks (Top-5 K) | Điểm Top Chunk | Thời gian (ms) | Điểm mấu chốt đối chiếu |\n")
-        f.write("|:---:|---|---|---|:---:|---|:---:|:---:|---|\n")
+        f.write("| STT | Câu hỏi | Câu trả lời RAG | Trang PDF trích dẫn | Top 5 Chunks (Top-5 K) | Điểm Top Chunk | Thời gian (ms) | Điểm mấu chốt đối chiếu |\n")
+        f.write("|:---:|---|---|:---:|---|:---:|:---:|---|\n")
         for r in results:
             f.write(
-                f"| {r['stt']} | {r['law_group']} | {clean_for_md(r['query'])} | "
+                f"| {r['stt']} | {clean_for_md(r['query'])} | "
                 f"{clean_for_md(r['answer'])} | {r['citation']} | {r.get('top_5_k_md', '')} | {r['top_score']} | "
                 f"{r['time_ms']} | {clean_for_md(r['key_fact'])} |\n"
             )
