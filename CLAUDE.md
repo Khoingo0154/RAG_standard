@@ -53,6 +53,9 @@ pytest rag_project/tests/ -v
 ## Cách tiếp tục
 Khi mở lại terminal, nói: "Đọc CLAUDE.md và docs/PROJECT_REPORT.md, tiếp tục phát triển RAG project"
 
+## Quy tắc cập nhật tài liệu bắt buộc
+Mỗi khi hoàn thành tính năng hoặc sửa lỗi, AI BẮT BUỘC phải cập nhật đồng bộ các file markdown liên quan (`AGENTS.md`, `docs/SESSION.md`, `docs/PROJECT_REPORT.md`, `docs/EXECUTION_TRACE.md`) và thông báo rõ ràng trong chat.
+
 ## TODO / Hướng phát triển
 1. Chạy MongoDB để hoàn tất integration test
 2. Thêm streaming response cho /query (SSE)

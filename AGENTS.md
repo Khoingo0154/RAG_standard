@@ -3,6 +3,15 @@
 > File này là **nguồn sự thật duy nhất (source of truth)** cho AI agent. 
 > Mọi thay đổi về kiến trúc, model, pipeline và kết quả benchmark đều được cập nhật tại đây.
 
+
+## 0. Quy tắc bắt buộc cho AI Agent (Agent Operational Protocol)
+
+> ⚠️ **BẮT BUỘC:** Mỗi khi hoàn thành một tính năng, tối ưu mã nguồn hoặc sửa xong một lỗi (bug fix), AI Agent **BẮT BUỘC phải cập nhật đồng bộ các file Markdown liên quan** trước khi kết thúc phiên:
+> 1. **`AGENTS.md`**: Cập nhật Bảng kiến trúc (Mục 1) nếu đổi công nghệ/model; thêm tóm tắt vào Lịch sử nâng cấp (Mục 2); cập nhật số lượng unit tests passed và tick `[x]` vào Bảng kiểm tra tiến độ (Mục 4).
+> 2. **`docs/SESSION.md`**: Ghi lại chi tiết phiên làm việc: tính năng mới, lỗi phát sinh, nguyên nhân và giải pháp kỹ thuật đã code.
+> 3. **`docs/PROJECT_REPORT.md` & `docs/EXECUTION_TRACE.md`**: Cập nhật sơ đồ luồng dữ liệu hoặc cây gọi hàm tương ứng nếu có sự thay đổi về pipeline/hàm xử lý.
+> 4. **Báo cáo cho người dùng**: Nêu rõ trong khung chat: đã thay đổi tính năng gì và đã cập nhật vào những file `.md` nào.
+
 ---
 
 ## 1. Tổng quan kiến trúc & Cấu hình hiện tại
