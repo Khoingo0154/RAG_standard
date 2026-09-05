@@ -303,7 +303,7 @@ POST /query  (api/main.py:113)
 └── 2.1  search_and_generate(query, file_id, top_k)  → RAGResponse
           │
           ├── 2.1a  QueryRouter.classify(query)       → intent: QueryIntent
-          │         └── Gọi gemini-1.5-flash-8b phân loại [DOCUMENT_QUERY, CHITCHAT, OUT_OF_SCOPE]
+          │         └── Gọi gemini-3.1-flash-lite phân loại [DOCUMENT_QUERY, CHITCHAT, OUT_OF_SCOPE]
           │
           ├── 2.1b  [IF CHITCHAT]
           │         └── Generator.generate_chitchat(query) → RAGResponse(answer, sources=[], intent="CHITCHAT")
@@ -312,16 +312,18 @@ POST /query  (api/main.py:113)
           │         └── Trả về câu từ chối lịch sự       → RAGResponse(answer, sources=[], intent="OUT_OF_SCOPE")
           │
           └── 2.1d  [IF DOCUMENT_QUERY]
-                    ├── expand_query_for_retrieval(query) → retrieval_query (kèm glossary FIFA)
+                    ├── get_search_terms(query) → retrieval_query, sparse_query, rerank_query
                     ├── get_embedder("gemini").embed_query(retrieval_query) → query_vector (768 chiều)
-                    ├── Retriever.search(query_vector, top_k, file_id)      → hits: list[dict]
-                    │    └── ChromaDB HNSW Cosine Similarity search
-                    └── Generator.generate(query, hits)                     → (answer, sources)
+                    └── retrieve_hybrid_and_rerank() → Top-5 chunks tinh khiết:
+                         ├── Branch A (Dense): Retriever.search(query_vector, top_k=15)
+                         ├── Branch B (Sparse): BM25Retriever.search(sparse_query, top_k=15)
+                         ├── RRF Fusion: reciprocal_rank_fusion(vector_hits, bm25_hits, k=60) → 20-25 candidates
+                         └── Reranking: Reranker.rerank(rerank_query, candidates, top_k=5) (FlashRank ONNX)
+                    └── Generator.generate(query, hits) → (answer, sources)
                          ├── _enrich_sources(hits)  → MongoDB metadata lookup (filename, pages)
                          ├── _build_prompt(query, hits) → Prompt có kèm context
-                         ├── _generate_gemini(prompt)   → Gemini 3.5 Flash trả lời tiếng Việt
+                         ├── _generate_gemini(prompt)   → Gemini 3.1 Flash-Lite trả lời tiếng Việt (kèm auto-retry 429/503)
                          └── _format_references(sources) → "(Tham khảo tại trang X–Y của PDF...)"
-```
 
 ### 2.1 API Layer: POST /query
 

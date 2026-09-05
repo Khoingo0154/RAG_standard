@@ -84,3 +84,41 @@ Hoặc:
   - `docs/rag_ingestion_context.md`
   - `docs/SESSION.md`
   - `docs/RUNTIME_LOG.md`
+
+---
+
+## Session Log — 2026-09-03: Triển khai Advanced RAG (Hybrid Search BM25 + FlashRank Reranker)
+
+### 1. Đã hoàn thành
+
+#### Kế hoạch & Kiến trúc
+- **Kế hoạch chuẩn hóa**: Lưu tại `docs/superpowers/plans/2026-09-03-advanced-rag-hybrid-rerank.md`.
+- **Chuyển dịch thành công sang Advanced RAG**: Bổ sung tầng lọc Sparse BM25 + RRF Fusion + FlashRank Reranker giữa Retrieval và Generator.
+
+#### Mã nguồn tính năng mới
+- **`retrieval/bm25_retriever.py`**:
+  - Tích hợp thuật toán `BM25Okapi` qua thư viện `rank-bm25`.
+  - Xây dựng bộ lọc 35 stopwords tiếng Anh (`STOP_WORDS`) để loại bỏ các từ nhiễu xuất hiện ở chân trang PDF (`laws, game, fifa, page`).
+  - Lấy Top-15 chunks từ khóa chính xác.
+- **`retrieval/fusion.py`**:
+  - Cài đặt thuật toán Reciprocal Rank Fusion (RRF, $k=60$).
+  - Khử trùng lặp `chunk_id`, hợp nhất 15 dense hits + 15 sparse hits thành 20–25 candidates.
+- **`retrieval/reranker.py`**:
+  - Cài đặt Cross-Encoder model `ms-marco-MiniLM-L-12-v2` qua thư viện `flashrank` (chạy ONNX Runtime trên CPU < 100ms).
+  - Áp dụng công thức nội suy điểm số: $\text{Score} = 0.6 \times \text{Normalized\_RRF} + 0.4 \times \text{FlashRank\_Score}$.
+- **`retrieval/pipeline.py`**:
+  - Xây dựng hàm `retrieve_hybrid_and_rerank()` điều phối luồng 4 bước.
+  - Xử lý semantic gap đa ngữ với `get_search_terms()`: bóc tách `retrieval_query` (song ngữ cho vector) và `english_query` (từ khóa tiếng Anh cho BM25 và FlashRank).
+
+#### Unit Tests
+- Viết thêm 3 file test mới: `tests/test_bm25.py`, `tests/test_fusion.py`, `tests/test_reranker.py`.
+- Toàn bộ test suite đạt **81/81 tests PASSED (100%)**.
+
+#### Báo cáo & Cột Top_5_K
+- Cập nhật `evals/run_qa_batch.py` bổ sung cột `Top_5_K` (hiển thị số trang, điểm score và trích đoạn 5 chunks).
+- Sao lưu bản kết quả cũ thành `evals/results_qa_testset_v0.1.csv` và `evals/results_qa_testset_v0.1.md`.
+- Xuất bản kết quả mới kèm `Top_5_K` vào `evals/results_qa_testset.csv` và `evals/results_qa_testset.md`.
+
+#### Đóng gói Docker & Git
+- Rebuild image `rag_project-api:latest` kèm `rank-bm25` và `flashrank`.
+- Gắn tag phiên bản `v0.1` và push lên GitHub repository: `https://github.com/Khoingo0154/RAG_standard.git`.

@@ -216,29 +216,53 @@ store_result = store.save(embedded_chunks)
 - **Bước 3b**: Insert vào MongoDB (text đầy đủ + metadata)
 - **Rollback**: nếu MongoDB fail → gọi `VectorStore.delete_by_file()` để xóa Chroma, tránh split-brain
 
-### 3.2. Query → Embed → Search → Generate → Answer (Retrieval Pipeline)
+### 3.2. Advanced Retrieval Pipeline (Hybrid Search BM25 + FlashRank Reranker + Generation)
 
 ```
-┌──────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌────────┐
-│ Query    │────▶│ Embed(query) │────▶│ ChromaSearch │────▶│ BuildPrompt  │────▶│ Answer │
-│ "AI là gì"│    │ → vector     │     │ top_k=5      │     │ + LLM call   │     │ + sources
-└──────────┘     └──────────────┘     └──────────────┘     └──────────────┘     └────────┘
-                                               │                                        │
-                                               ▼                                        ▼
-                                        list[dict] hits                          RAGResponse
-                                        chunk_id, text,                          answer, sources[]
-                                        score, file_id                           query_time_ms
+[1. User Query] 
+       │
+       ▼
+[2. Query Router: gemini-3.1-flash-lite] ──(DOCUMENT_QUERY)──┐
+       │ (CHITCHAT / OUT_OF_SCOPE)                           │
+       ▼ (Trả lời ngay < 1.2s)                               ▼
+                    [3. HYBRID RETRIEVAL (Chạy song song)]
+                    ┌─────────────────┴─────────────────┐
+                    ▼                                   ▼
+        [Branch A: Dense Vector]            [Branch B: Sparse BM25]
+           (Độ tương đồng ngữ nghĩa)            (Khớp từ khóa chính xác)
+         ChromaDB Cosine (Top-15)            BM25 Chunks Index (Top-15)
+                    │                                   │
+              Top-15 Chunks                       Top-15 Chunks
+                    └─────────────────┬─────────────────┘
+                                      ▼
+                        [4. RRF FUSION & DEDUPLICATION]
+                     (Gộp chung ~20-25 Chunks độc nhất)
+                                      │
+                                      ▼
+                      [5. RERANKING STAGE (FlashRank)]
+             (Mô hình Cross-Encoder tối ưu hóa qua ONNX CPU)
+              Input: Mỗi cặp [Query + Chunk Text]
+              Output: Điểm tương quan thực sự (0.0 ➔ 1.0)
+                                      │
+                                      ▼
+                             [CẮT LẤY TOP 3 - 5]
+                        (Loại bỏ sạch các chunk nhiễu)
+                                      │
+                                      ▼
+                        [6. GENERATION + CITATION]
+                  gemini-3.1-flash-lite đọc Top-5 tinh khiết
+               ➔ Trả lời chính xác + Trích dẫn số trang PDF
 ```
 
-**Chi tiết:**
-1. **Embed query**: dùng cùng embedder đã dùng khi ingestion để tạo query vector
-2. **Search ChromaDB**: `collection.query()` với cosine distance, có thể filter theo `file_id`
-3. **Score**: chuyển từ distance sang score: `score = 1.0 - distance` (distance càng nhỏ → độ tương đồng càng cao)
-4. **Enrich sources**: lookup MongoDB để lấy `filename` cho mỗi chunk
-5. **Build prompt**: ghép context từ các chunk tìm được thành prompt tiếng Việt
-6. **LLM generate**: gọi Ollama `POST /api/generate` hoặc OpenAI Chat Completion
-7. **Trả về**: `RAGResponse(answer, sources, query_time_ms)`
-
+**Chi tiết luồng thực thi:**
+1. **Query Routing (`retrieval/router.py`)**: Dùng `gemini-3.1-flash-lite` phân loại câu hỏi vào 3 intents: `DOCUMENT_QUERY`, `CHITCHAT` (phản hồi ngay < 1.2s), `OUT_OF_SCOPE` (từ chối lịch sự).
+2. **Cầu nối Đa ngữ (`retrieval/pipeline.py`)**: Hàm `get_search_terms()` tự động bóc tách `retrieval_query` (song ngữ) cho Vector Embedding và `english_query` (thuật ngữ tiếng Anh) cho BM25 và Reranker.
+3. **Branch A - Dense Vector Search**: Quét ChromaDB lấy Top-15 chunks có độ tương đồng Cosine cao nhất.
+4. **Branch B - Sparse BM25 Search (`retrieval/bm25_retriever.py`)**: Dùng `rank-bm25` lọc stopwords và tìm Top-15 chunks khớp từ khóa cứng (`"11m"`, `"Law 11"`, `"DOGSO"`).
+5. **RRF Fusion (`retrieval/fusion.py`)**: Hợp nhất thứ hạng theo công thức $RRF\_Score(d) = \sum \frac{1}{60 + Rank(d)}$, khử trùng lặp `chunk_id`, gom thành 20–25 ứng viên.
+6. **FlashRank Reranker (`retrieval/reranker.py`)**: Mô hình Cross-Encoder `ms-marco-MiniLM-L-12-v2` chấm điểm chéo theo công thức: $\text{Score} = 0.6 \times \text{Normalized\_RRF} + 0.4 \times \text{FlashRank\_Score}$. Cắt lấy Top-5 chunks tinh khiết nhất.
+7. **LLM Generation (`retrieval/generator.py`)**: Gửi Top-5 chunks vào `gemini-3.1-flash-lite` (kèm cơ chế Auto-retry với Exponential Backoff khi gặp lỗi 429/503), tự động gắn trích dẫn số trang: `(Tham khảo tại trang X–Y của PDF...)`.
+8. **Trả về:** `RAGResponse(answer, sources, query_time_ms, intent)`.
 **Ví dụ prompt:**
 ```
 Dựa vào các đoạn văn bản sau đây, hãy trả lời câu hỏi.
