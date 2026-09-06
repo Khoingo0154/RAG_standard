@@ -54,3 +54,49 @@ class MinioObjectStore:
             self._client.remove_object(self.bucket, obj.object_name)
             deleted += 1
         return deleted
+
+    def list_file_ids(self) -> list[str]:
+        """Liệt kê danh sách tất cả các file_id độc nhất đang lưu trữ trong MinIO."""
+        if not self._client.bucket_exists(self.bucket):
+            return []
+
+        file_ids = set()
+        prefix = "documents/"
+        for obj in self._client.list_objects(self.bucket, prefix=prefix, recursive=True):
+            parts = obj.object_name.split("/")
+            if len(parts) >= 3 and parts[0] == "documents" and parts[1]:
+                file_ids.add(parts[1])
+        return sorted(file_ids)
+
+    def list_files(self) -> list[dict]:
+        """Liệt kê chi tiết tất cả các file đang lưu trữ trong MinIO."""
+        if not self._client.bucket_exists(self.bucket):
+            return []
+
+        files = []
+        prefix = "documents/"
+        for obj in self._client.list_objects(self.bucket, prefix=prefix, recursive=True):
+            parts = obj.object_name.split("/")
+            if len(parts) >= 3 and parts[0] == "documents":
+                files.append({
+                    "file_id": parts[1],
+                    "filename": "/".join(parts[2:]),
+                    "object_key": obj.object_name,
+                    "size_bytes": obj.size,
+                    "last_modified": obj.last_modified.isoformat() if obj.last_modified else None,
+                })
+        return files
+
+
+def get_minio_file_ids() -> list[str]:
+    """Hàm tiện ích tạo nhanh MinioObjectStore từ settings và trả về danh sách file_id."""
+    from shared.config import settings
+
+    store = MinioObjectStore(
+        endpoint=settings.MINIO_ENDPOINT,
+        access_key=settings.MINIO_ACCESS_KEY,
+        secret_key=settings.MINIO_SECRET_KEY,
+        bucket=settings.MINIO_BUCKET,
+        secure=settings.MINIO_SECURE,
+    )
+    return store.list_file_ids()

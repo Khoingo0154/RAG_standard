@@ -91,3 +91,25 @@ class TestAPI:
         mock_sg.assert_called_once()
         assert mock_sg.call_args[1]["file_id"] == "f1"
         assert mock_sg.call_args[1]["top_k"] == 3
+
+    def test_list_files_endpoint(self):
+        with patch("api.main.MinioObjectStore") as mock_store_cls:
+            mock_store = MagicMock()
+            mock_store.list_files.return_value = [
+                {
+                    "file_id": "file-123",
+                    "filename": "Law_fifa.pdf",
+                    "object_key": "documents/file-123/Law_fifa.pdf",
+                    "size_bytes": 1024,
+                    "last_modified": "2026-09-05T00:00:00",
+                }
+            ]
+            mock_store_cls.return_value = mock_store
+
+            response = client.get("/files")
+
+        assert response.status_code == 200
+        data = response.json()
+        assert data["total_files"] == 1
+        assert data["file_ids"] == ["file-123"]
+        assert data["files"][0]["filename"] == "Law_fifa.pdf"

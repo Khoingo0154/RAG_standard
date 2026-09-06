@@ -77,6 +77,32 @@ async def ingest(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Ingestion failed: {e}")
 
 
+@app.get("/files")
+async def list_files():
+    """Liệt kê danh sách tất cả file_id và thông tin tài liệu PDF đang có trong MinIO."""
+    try:
+        if not settings.MINIO_ENABLED:
+            return {"total_files": 0, "file_ids": [], "files": [], "message": "MinIO is disabled"}
+
+        object_store = MinioObjectStore(
+            endpoint=settings.MINIO_ENDPOINT,
+            access_key=settings.MINIO_ACCESS_KEY,
+            secret_key=settings.MINIO_SECRET_KEY,
+            bucket=settings.MINIO_BUCKET,
+            secure=settings.MINIO_SECURE,
+        )
+        files = object_store.list_files()
+        file_ids = [f["file_id"] for f in files]
+        return {
+            "total_files": len(files),
+            "file_ids": file_ids,
+            "files": files,
+        }
+    except Exception as e:
+        logger.error(f"Lỗi khi lấy danh sách files từ MinIO: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to list files: {e}")
+
+
 @app.delete("/files/{file_id}")
 async def delete_file(file_id: str):
     vector_store = VectorStore(settings.CHROMA_PATH, settings.CHROMA_COLLECTION)
