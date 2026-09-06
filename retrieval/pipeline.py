@@ -190,6 +190,34 @@ def search_and_generate(
             intent=intent.value,
         )
 
+    # 3.5. Xử lý câu hỏi về dữ liệu bóng đá thực tế (Tỷ số, CLB, Cầu thủ, BXH)
+    if intent == QueryIntent.FOOTBALL_LIVE_DATA:
+        logger.info("⚽ [BRANCH: FOOTBALL_LIVE_DATA] -> Kích hoạt FootballApiClient truy vấn API-Sports...")
+        import json
+        from services.football_api import FootballApiClient
+        fb_client = FootballApiClient()
+        live_data = fb_client.fetch_data_for_query(query)
+
+        prompt = (
+            f"Bạn là trợ lý thể thao bóng đá thông minh.\n"
+            f"Dưới đây là dữ liệu thực tế thu thập từ API-Football (API-Sports):\n"
+            f"{json.dumps(live_data, ensure_ascii=False, indent=2)}\n\n"
+            f"Hãy dựa vào dữ liệu trên để trả lời câu hỏi của người dùng một cách rõ ràng, chi tiết và mượt mà bằng tiếng Việt:\n"
+            f"Câu hỏi: \"{query}\"\n"
+            f"Trình bày mạch lạc bằng gạch đầu dòng nếu có danh sách trận đấu hoặc thông tin đội bóng/cầu thủ."
+        )
+        answer_text = generator._generate_gemini(prompt)
+        answer = f"{answer_text}\n\n(Nguồn dữ liệu: API-Football / API-Sports Realtime)"
+        elapsed_ms = (time.time() - start) * 1000
+        logger.info(f"✅ [HOÀN THÀNH: FOOTBALL_LIVE_DATA] Phản hồi trong {elapsed_ms:.1f}ms")
+        logger.info("=" * 60)
+        return RAGResponse(
+            answer=answer,
+            sources=[],
+            query_time_ms=elapsed_ms,
+            intent=intent.value,
+        )
+
     # 4. Với DOCUMENT_QUERY -> Thực thi luồng RAG đầy đủ
     logger.info("📚 [BRANCH: DOCUMENT_QUERY] -> Kích hoạt chuỗi hàm: expand_query_for_retrieval() ➔ BaseEmbedder.embed_query() ➔ Retriever.search() ➔ Generator.generate()")
     emb_provider = embed_provider or settings.EMBED_PROVIDER

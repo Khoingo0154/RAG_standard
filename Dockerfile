@@ -10,6 +10,7 @@ COPY telegram_bot/ telegram_bot/
 COPY ingestion/ ingestion/
 COPY retrieval/ retrieval/
 COPY shared/ shared/
+COPY services/ services/
 COPY evals/ evals/
 
 EXPOSE 8000

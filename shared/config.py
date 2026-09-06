@@ -47,6 +47,10 @@ class Settings:
     OPENAI_API_KEY: Optional[str] = None
     GEMINI_API_KEY: Optional[str] = None
 
+
+    # === API-Football / API-Sports (Live scores, teams, players) ===
+    APISPORTS_KEY: str = "c13c4f7d130d29ab2c33954cfaefb6ce"
+    APISPORTS_BASE_URL: str = "https://v3.football.api-sports.io"
     RETRIEVAL_TOP_K: int = 5
 
     LLM_PROVIDER: str = "gemini"

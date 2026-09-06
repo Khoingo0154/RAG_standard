@@ -1,5 +1,6 @@
 import logging
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, UploadFile, Query
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -165,6 +166,124 @@ async def query(request: QueryRequest):
         logger.error(f"Query failed: {e}")
         raise HTTPException(status_code=500, detail=f"Query failed: {e}")
 
+
+# === API-FOOTBALL / API-SPORTS ENDPOINTS ===
+
+@app.get("/widgets", response_class=HTMLResponse)
+async def football_widgets():
+    """Trang giao diện trực quan nhúng API-Sports Widgets hiển thị giải đấu, tỷ số và lịch thi đấu."""
+    api_key = settings.APISPORTS_KEY
+    html_content = f"""<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API-Sports Football Widgets - Live Scores & Leagues</title>
+    <!-- API-Sports Widget Scripts -->
+    <script type="module" src="https://widgets.api-sports.io/2.0.3/widgets.js"></script>
+    <style>
+        body {{
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            margin: 0;
+            padding: 20px;
+        }}
+        .header {{
+            text-align: center;
+            margin-bottom: 24px;
+        }}
+        h1 {{
+            color: #38bdf8;
+            margin-bottom: 8px;
+        }}
+        .badge {{
+            display: inline-block;
+            background: #1e293b;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 14px;
+            color: #94a3b8;
+            border: 1px solid #334155;
+        }}
+        .container {{
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            color: #1e293b;
+        }}
+        .footer {{
+            text-align: center;
+            margin-top: 24px;
+            color: #64748b;
+            font-size: 13px;
+        }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚽ API-Sports Football Widgets Dashboard</h1>
+        <div class="badge">Live Scores, Leagues & Standings</div>
+    </div>
+
+    <div class="container">
+        <!-- API-Sports Widgets Requested by User -->
+        <api-sports-widget data-type="leagues"></api-sports-widget>
+
+        <!-- Configuration Widget -->
+        <api-sports-widget data-type="config"
+            data-key="{api_key}"
+            data-sport="football"
+            data-lang="en"
+            data-theme="white"
+            data-show-errors="true">
+        </api-sports-widget>
+    </div>
+
+    <div class="footer">
+        RAG Project - Football Assistant & Live Data Integration &bull; Powered by API-Sports
+    </div>
+</body>
+</html>"""
+    return HTMLResponse(content=html_content)
+
+
+@app.get("/football/status")
+async def football_status():
+    """Kiểm tra hạn mức API-Sports và thông tin tài khoản."""
+    from services.football_api import FootballApiClient
+    client = FootballApiClient()
+    return client.get_status()
+
+
+@app.get("/football/live")
+async def football_live():
+    """Lấy danh sách các trận đấu đang diễn ra trực tiếp (Live Scores)."""
+    from services.football_api import FootballApiClient
+    client = FootballApiClient()
+    matches = client.get_live_fixtures()
+    return {"count": len(matches), "matches": matches}
+
+
+@app.get("/football/teams")
+async def football_teams(search: str = Query(..., min_length=2, description="Tên câu lạc bộ cần tìm (vd: Arsenal, Real Madrid)")):
+    """Tìm kiếm thông tin câu lạc bộ / đội bóng theo tên."""
+    from services.football_api import FootballApiClient
+    client = FootballApiClient()
+    teams = client.search_teams(search)
+    return {"results": len(teams), "teams": teams}
+
+
+@app.get("/football/players")
+async def football_players(search: str = Query(..., min_length=2, description="Tên cầu thủ cần tìm (vd: Messi, Ronaldo, Haaland)")):
+    """Tìm kiếm hồ sơ cầu thủ theo tên."""
+    from services.football_api import FootballApiClient
+    client = FootballApiClient()
+    players = client.search_players(search)
+    return {"results": len(players), "players": players}
 
 def main():
     logging.basicConfig(

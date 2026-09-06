@@ -20,7 +20,7 @@ Hệ thống RAG: Query ➔ QueryRouter ➔ (Chitchat / Out-of-scope / RAG Pipel
 
 | Thành phần | Công nghệ / Model | Ghi chú |
 |---|---|---|
-| **Query Router** | `gemini-3.1-flash-lite` | Phân loại 3 intents: `DOCUMENT_QUERY`, `CHITCHAT`, `OUT_OF_SCOPE` (~1.2s). |
+| **Query Router** | `gemini-3.1-flash-lite` | Phân loại 4 intents: `DOCUMENT_QUERY`, `FOOTBALL_LIVE_DATA`, `CHITCHAT`, `OUT_OF_SCOPE` (~1.2s). |
 | **LLM Generation** | `gemini-3.1-flash-lite` | Trả lời câu hỏi dựa trên ngữ cảnh + trích dẫn số trang PDF, có auto-retry 429/503. |
 | **Embedding** | `gemini-embedding-001` (768 chiều) | SDK `google-genai`, có auto-retry khi gặp rate limit. |
 | **Vector Store** | ChromaDB (Persistent SQLite nhúng trong tiến trình, volume `chroma_db`) | Đo độ tương đồng Cosine Similarity (Dense Search), zero network latency. |
@@ -32,6 +32,7 @@ Hệ thống RAG: Query ➔ QueryRouter ➔ (Chitchat / Out-of-scope / RAG Pipel
 | **API** | FastAPI (container `rag_api`, port 8000, Swagger UI `/docs`) | Endpoints: `/health`, `/ingest`, `/query`, `/files/{id}`. |
 | **Telegram Bot** | python-telegram-bot (container `rag_telegram_bot`) | Profile `telegram`, chia nhỏ tin nhắn $\le 4096$ ký tự. |
 | **Dữ liệu mẫu đã Ingest** | `Law_fifa.pdf` (241 chunks) | `file_id`: `8f525964-a864-43ef-b87b-34f6482d44f1` |
+| **Live Football API** | API-Football / API-Sports (`v3.football.api-sports.io`) | Tỷ số trực tiếp, lịch thi đấu, câu lạc bộ, hồ sơ cầu thủ & Widgets HTML. |
 
 ---
 
@@ -99,6 +100,15 @@ Hệ thống RAG: Query ➔ QueryRouter ➔ (Chitchat / Out-of-scope / RAG Pipel
   - Tự động xuất báo cáo đa định dạng: JSON, CSV (Excel), Markdown.
 - **Unit Tests:** Thêm 7 unit tests mới trong `tests/test_benchmark.py`, nâng tổng số test lên **88/88 tests PASSED (100%)**.
 - **Shortcut tiện ích:** Tạo `run_benchmark.cmd` (1-click chạy kiểm thử đánh giá).
+
+### Giai đoạn 7 (Ngày 06/09) — Tích hợp API-Football (Tỷ số trực tiếp, CLB, Cầu thủ & Widgets)
+- **Tích hợp API-Sports Client (`services/football_api.py`):** Xây dựng `FootballApiClient` kết nối trực tiếp `https://v3.football.api-sports.io` qua key `c13c4f7d130d29ab2c33954cfaefb6ce` (Gói Free 100 requests/ngày, hạn đến 2027), có cache bộ nhớ đệm 2 phút chống lãng phí quota.
+- **Mở rộng Query Router 4 intents (`retrieval/router.py`):** Bổ sung intent `FOOTBALL_LIVE_DATA` tự động nhận diện câu hỏi về tỷ số, trận đấu trực tiếp, thông tin đội bóng, hồ sơ cầu thủ, bảng xếp hạng.
+- **Tích hợp Pipeline thời gian thực (`retrieval/pipeline.py`):** Tự động bóc tách thực thể câu hỏi, gọi API-Football lấy dữ liệu realtime và dùng Gemini tổng hợp câu trả lời tiếng Việt chính xác (kèm tag nguồn dữ liệu).
+- **Giao diện Web Widgets (`/widgets`):** Mở endpoint `GET /widgets` trả về trang HTML nhúng trực tiếp thẻ `<api-sports-widget>` chính thức từ API-Sports hiển thị giải đấu và tỷ số trực quan trên trình duyệt.
+- **Mở rộng REST API (`api/main.py`):** Bổ sung các endpoints: `GET /widgets`, `GET /football/status`, `GET /football/live`, `GET /football/teams`, `GET /football/players`.
+- **Unit Tests:** Viết 10 tests mới trong `tests/test_football_api.py`, nâng tổng số test lên **99/99 tests PASSED (100%)**.
+- **Rebuild Docker Image:** Rebuild `rag_project-api:latest` kèm `services/` thành công.
 ---
 
 ## 3. Các lệnh điều khiển thiết yếu (Chạy từ CMD máy thật)
@@ -150,12 +160,13 @@ run_benchmark.cmd
 - [x] Xây dựng Batch QA Test Suite 20 câu hỏi, runner tự động xuất file `results_qa_testset.csv` & `results_qa_testset.md`.
 - [x] Cô lập phạm vi pytest bằng `pytest.ini` và `__test__ = False`.
 - [x] Tạo đầy đủ các script tiện ích: `run_eval.cmd`, `view_logs.cmd`, `run_swagger.cmd`, `run_telegram.cmd`, `run_qa_test.cmd`, `inspect_chunks.cmd`.
-- [x] Toàn bộ test suite đạt chuẩn (88/88 unit tests passed).
+- [x] Toàn bộ test suite đạt chuẩn (99/99 unit tests passed).
 - [x] Chuẩn hóa cây thư mục: chuyển tài liệu logic/hệ thống vào `docs/`.
 - [x] **Hybrid Search (BM25 + ChromaDB Vector):** Kết hợp tìm kiếm từ khóa chính xác BM25 + Vector Search qua RRF Fusion.
 - [x] **Reranking (FlashRank Cross-Encoder):** Chấm điểm lại ứng viên bằng Cross-Encoder ONNX nhẹ trên CPU.
 - [x] **Tối ưu hóa hạ tầng Docker:** Loại bỏ container `rag_chroma` thừa, chuẩn hóa PersistentClient nhúng trên volume `chroma_db`.
 - [x] **Lớp RAGBenchmark OOP & Hệ thống Metrics:** Xây dựng `evals/benchmark.py` và `evals/metrics.py` đo lường đa chiều toàn diện.
+- [x] **Tích hợp API-Football & Widgets:** Tra cứu tỷ số, CLB, cầu thủ thời gian thực và trang nhúng widget trực quan.
 
 ### Kế hoạch tiếp theo (Next Steps):
 - [ ] **Conversational Memory & Multi-turn Chat:** Tích hợp bộ nhớ ngữ cảnh cho Telegram Bot và API `/query`.

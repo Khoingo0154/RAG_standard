@@ -27,9 +27,9 @@ Dự án được thiết kế theo kiến trúc module hóa, tách biệt inges
 | Query Router | `gemini-3.1-flash-lite` | Phân loại intent: Document, Chitchat, Out-of-scope |
 | LLM Generation | `gemini-3.1-flash-lite` (Flash-Lite) / Ollama / OpenAI | Sinh câu trả lời từ context + trích dẫn trang PDF |
 | Container | Docker + Docker Compose | Đóng gói và chạy đa service (API, Mongo, Chroma, MinIO, Telegram) |
-| Testing | pytest | Unit test & integration test |
+| Live Football API | API-Football / API-Sports | Tỷ số trực tiếp, lịch thi đấu, câu lạc bộ, cầu thủ & Widgets HTML |
+| Testing | pytest | Unit test & integration test (89/89 passed) |
 | PDF generation (test) | ReportLab | Tạo PDF mẫu cho test |
-
 ### Sơ đồ kiến trúc (ASCII Art)
 
 ```
@@ -461,6 +461,18 @@ curl -X POST http://localhost:8000/query \
   -d '{"query": "AI là gì?", "file_id": "a1b2c3d4-...", "top_k": 3}'
 ```
 
+
+### 4.5. `GET /files`
+**Mục đích**: Liệt kê danh sách tất cả `file_id` và thông tin tài liệu PDF đang lưu trữ trong MinIO.
+
+### 4.6. `GET /widgets`
+**Mục đích**: Trang giao diện trực quan HTML nhúng trực tiếp API-Sports Widgets (`leagues`, `livescore`, `config`).
+
+### 4.7. Nhóm Endpoints Football Realtime
+- `GET /football/status`: Kiểm tra hạn mức sử dụng và gói API-Sports.
+- `GET /football/live`: Danh sách các trận đấu đang diễn ra trực tiếp.
+- `GET /football/teams?search=...`: Tra cứu thông tin câu lạc bộ, sân vận động.
+- `GET /football/players?search=...`: Tra cứu hồ sơ cầu thủ (tuổi, quốc tịch, chiều cao...).
 ---
 
 ## 5. Cấu hình

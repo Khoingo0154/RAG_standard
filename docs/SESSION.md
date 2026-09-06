@@ -178,3 +178,35 @@ Hoặc:
 - Tạo `tests/test_benchmark.py` gồm 7 unit tests kiểm thử toàn diện các hàm metrics, logic tính điểm và xuất báo cáo.
 - Tổng số unit tests dự án nâng lên **88/88 tests PASSED (100%)**.
 - Chạy thực nghiệm trên `evals/fifa_law11_basic.json`: Mean Recall@5 đạt `83.3%`, Mean MRR đạt `0.8750`, Hit Rate đạt `100%`.
+
+---
+
+## Session Log — 2026-09-06: Tích hợp API-Football / API-Sports (Tỷ số trực tiếp, CLB, Cầu thủ & Widgets HTML)
+
+### 1. Đã hoàn thành
+
+#### Tích hợp Client API-Sports (`services/football_api.py`)
+- **Xây dựng `FootballApiClient`**: Kết nối trực tiếp tới `https://v3.football.api-sports.io` thông qua header `x-apisports-key: c13c4f7d130d29ab2c33954cfaefb6ce`.
+- **Hỗ trợ đa dạng endpoint**:
+  - `get_status()`: Đo lường hạn mức sử dụng (Gói Free 100 req/ngày, hạn đến 2027).
+  - `get_live_fixtures()`: Lấy tỷ số các trận đấu đang đá trực tiếp.
+  - `search_teams()`: Tra cứu thông tin CLB, năm thành lập, sân vận động, sức chứa, logo.
+  - `search_players()`: Tra cứu hồ sơ cầu thủ (tuổi, quốc tịch, ngày sinh, chiều cao, cân nặng).
+  - `get_team_last_fixtures()`: Lấy kết quả các trận gần nhất của CLB.
+  - `get_standings()`: Bảng xếp hạng giải đấu.
+- **Cơ chế Cache đệm**: Lưu kết quả 2 phút trên bộ nhớ RAM (`_CACHE`) để bảo vệ hạn mức 100 requests/ngày.
+
+#### Mở rộng Routing & Pipeline RAG (`retrieval/router.py` & `retrieval/pipeline.py`)
+- **Intent thứ 4**: Bổ sung `QueryIntent.FOOTBALL_LIVE_DATA`.
+- **Tự động rẽ nhánh thông minh**:
+  - Nếu hỏi Luật bóng đá $\to$ `DOCUMENT_QUERY` (quét ChromaDB + BM25 trên sách luật FIFA).
+  - Nếu hỏi Tỷ số / Cầu thủ / CLB $\to$ `FOOTBALL_LIVE_DATA` (gọi `FootballApiClient`, nạp dữ liệu realtime và dùng Gemini 3.1 Flash-Lite sinh câu trả lời tiếng Việt mượt mà).
+
+#### Dashboard Giao diện Web Widgets (`api/main.py`)
+- **Endpoint `GET /widgets`**: Trả về trang HTML nhúng trực tiếp thẻ `<api-sports-widget data-type="leagues">` và `<api-sports-widget data-type="config">` với key của người dùng, hiển thị giao diện bảng đấu và tỷ số trực quan trên trình duyệt.
+- **Các API trực tiếp**: `GET /football/status`, `GET /football/live`, `GET /football/teams`, `GET /football/players`.
+
+#### Unit Tests & Đóng gói Docker
+- Viết 10 unit tests trong `tests/test_football_api.py`.
+- Toàn bộ test suite đạt **99/99 tests PASSED (100%)**.
+- Cập nhật `Dockerfile` thêm `COPY services/ services/` và rebuild image `rag_project-api:latest`.
